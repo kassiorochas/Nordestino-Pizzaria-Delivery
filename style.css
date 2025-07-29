@@ -1,0 +1,865 @@
+/* Variáveis CSS */
+:root {
+    --primary-red: #c90000; /* Vermelho principal da pizzaria */
+    --secondary-yellow: #FFD700; /* Amarelo para destaque */
+    --text-dark: #333;
+    --text-light: #fdfdfd; /* Texto claro para fundos escuros */
+    --background-light: #f0f0f0; /* Fundo claro para seções */
+    --background-dark: #2c2c2c; /* Fundo escuro, por exemplo, do header */
+    --border-color: #ddd;
+    --box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    --font-heading: 'Bebas Neue', sans-serif;
+    --font-body: 'Roboto', sans-serif;
+    --whatsapp-green: #25D366;
+    --instagram-purple: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%);
+}
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--background-light);
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* Remove o destaque azul em toques */
+}
+
+/* Header */
+header {
+    background-color: var(--primary-red);
+    color: var(--text-light);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--box-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header .logo-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer; /* Torna o contêiner do logo clicável */
+}
+
+header .logo {
+    width: 60px; /* NOVO: Logo ligeiramente maior */
+    height: auto;
+}
+
+header h1 {
+    font-family: var(--font-heading);
+    font-size: 2.2rem; /* NOVO: Aumenta o nome da pizzaria */
+    line-height: 1;
+    margin: 0;
+}
+
+header .tagline {
+    font-size: 1.1rem; /* NOVO: Aumenta o "Delivery" */
+    margin: 0;
+    color: var(--secondary-yellow);
+}
+
+.whatsapp-header {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+.whatsapp-header:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+.whatsapp-header i {
+    font-size: 1.2rem;
+}
+
+.cart-button {
+    background-color: var(--secondary-yellow);
+    color: var(--primary-red);
+    border: none;
+    border-radius: 50px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    position: relative;
+    cursor: pointer;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease;
+}
+.cart-button:hover {
+    transform: scale(1.05);
+}
+.cart-button span#cart-item-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--text-dark);
+    color: var(--text-light);
+    font-size: 0.7rem;
+    border-radius: 50%;
+    padding: 0.2em 0.5em;
+    min-width: 1.5em;
+    text-align: center;
+    line-height: 1;
+}
+
+/* Seções Gerais */
+.section {
+    padding: 20px;
+    background-color: var(--text-light);
+    margin-bottom: 10px; /* Espaçamento entre seções */
+    box-shadow: var(--box-shadow);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--primary-red);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+/* Hero Section */
+#hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/hero-pizza-background.jpeg') center/cover no-repeat fixed;
+    color: var(--text-light);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 0; /* Remove border-radius das seções para a hero */
+    box-shadow: none; /* Remove box-shadow da hero */
+}
+#hero h2 {
+    font-family: var(--font-heading);
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    color: var(--text-light);
+}
+#hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center; /* NOVO: Centraliza os botões */
+}
+
+/* Botões Gerais */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.btn.primary {
+    background-color: var(--primary-red);
+    color: var(--text-light);
+}
+.btn.secondary {
+    background-color: var(--secondary-yellow);
+    color: var(--primary-red);
+}
+.btn.full-width {
+    width: 100%;
+}
+.btn.mt-1 {
+    margin-top: 10px;
+}
+.btn.mt-2 {
+    margin-top: 20px;
+}
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Seção de Promoções */
+#promocoes {
+    background-color: var(--background-dark); /* Fundo escuro */
+    color: var(--text-light);
+    border-radius: 0; /* Remove border-radius das seções para promoções */
+    box-shadow: none; /* Remove box-shadow das promoções */
+}
+#promocoes .section-title {
+    color: var(--secondary-yellow);
+}
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.promo-card {
+    background-color: var(--text-light);
+    color: var(--text-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+}
+.promo-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+.promo-card h4 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin: 10px 15px 5px;
+    color: var(--primary-red);
+}
+.promo-card p {
+    font-size: 0.9rem;
+    margin: 0 15px 10px;
+    flex-grow: 1; /* Para empurrar o preço e botão para baixo */
+}
+.promo-card .promo-price {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--primary-red);
+    margin: 0 15px 10px;
+    text-align: right;
+}
+.promo-card .btn {
+    margin: 0 15px 15px;
+}
+
+/* Cardápio */
+#cardapio {
+    max-width: 900px;
+    margin: 10px auto; /* Para centralizar e dar um pequeno espaçamento do hero/promo */
+    background-color: var(--text-light);
+}
+.menu-categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.menu-cat-btn {
+    background-color: var(--background-light);
+    border: 1px solid var(--border-color);
+    border-radius: 50px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: bold;
+    color: var(--text-dark);
+    transition: all 0.2s ease;
+}
+.menu-cat-btn:hover {
+    background-color: var(--border-color);
+}
+.menu-cat-btn.active {
+    background-color: var(--primary-red);
+    color: var(--text-light);
+    border-color: var(--primary-red);
+}
+
+.menu-items-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.menu-item-card {
+    background-color: var(--text-light);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    text-align: left;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.menu-item-card:hover {
+    transform: translateY(-5px);
+}
+.menu-item-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+.menu-item-card .item-info {
+    padding: 15px;
+}
+.menu-item-card h4 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    color: var(--primary-red);
+}
+.menu-item-card p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.menu-item-card .item-price {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--text-dark);
+    text-align: right;
+}
+.no-items-message {
+    text-align: center;
+    grid-column: 1 / -1; /* Ocupa todas as colunas no grid */
+    padding: 40px 0;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+}
+
+/* Carrinho */
+#cart, #checkout, #order-confirmation {
+    max-width: 600px;
+    margin: 10px auto;
+    background-color: var(--text-light);
+}
+.hidden {
+    display: none !important;
+}
+.cart-items {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 15px;
+    min-height: 100px; /* Para não colapsar quando vazio */
+}
+.empty-cart-message {
+    text-align: center;
+    color: var(--text-dark);
+    padding: 20px 0;
+}
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border-color);
+}
+.cart-item:last-child {
+    border-bottom: none;
+}
+.cart-item-details h4 {
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+.cart-item-details p {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    margin-top: 2px;
+}
+.cart-item-price {
+    font-weight: bold;
+    color: var(--primary-red);
+}
+.cart-item-quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.cart-item-quantity-control button {
+    background-color: var(--primary-red);
+    color: var(--text-light);
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.cart-item-quantity-control button:hover {
+    background-color: #a00;
+}
+.cart-item-quantity-control span {
+    font-weight: bold;
+    color: var(--text-dark);
+}
+
+.cart-summary {
+    background-color: var(--background-light);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: right;
+}
+.cart-summary p {
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+.cart-summary h3 {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--primary-red);
+    margin-top: 10px;
+}
+
+/* Checkout */
+.checkout-form {
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+.checkout-form h4 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    color: var(--primary-red);
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+.checkout-form h4:first-child {
+    margin-top: 0;
+}
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+.input-group input[type="text"],
+.input-group input[type="tel"],
+.input-group input[type="number"],
+.input-group textarea {
+    width: calc(100% - 20px);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+.input-group textarea {
+    resize: vertical;
+}
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+.radio-group input[type="radio"] {
+    margin-right: 10px;
+    cursor: pointer;
+}
+.radio-group label {
+    font-weight: normal;
+    color: var(--text-dark);
+    cursor: pointer;
+}
+.delivery-address-group {
+    background-color: var(--background-light);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 10px;
+}
+.delivery-address-group.hidden {
+    display: none;
+}
+#change-for-group.hidden {
+    display: none;
+}
+
+
+/* Confirmação de Pedido */
+#order-confirmation {
+    padding: 40px 20px;
+}
+.confirmation-message {
+    font-size: 1.2rem;
+    color: var(--whatsapp-green);
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.confirmation-message i {
+    font-size: 1.5rem;
+}
+
+/* Footer */
+footer {
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    padding: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 5px solid var(--secondary-yellow); /* Detalhe no footer */
+    margin-top: 20px;
+}
+footer p {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+footer i {
+    color: var(--secondary-yellow);
+}
+footer .developed-by {
+    font-size: 0.8rem;
+    margin-top: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    display: block; /* Garante que fique em uma nova linha */
+}
+
+/* Modal de Detalhes do Item */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.modal.active {
+    display: flex;
+}
+.modal-content {
+    background-color: var(--text-light);
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.modal-content .close-button {
+    color: var(--text-dark);
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+}
+.modal-content .close-button:hover,
+.modal-content .close-button:focus {
+    color: var(--primary-red);
+    text-decoration: none;
+}
+.modal-content img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+.modal-content h4 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--primary-red);
+    margin-bottom: 10px;
+}
+.modal-content p {
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+.modal-options label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+.modal-options select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: var(--text-dark);
+}
+.modal-options .pizza-flavor-selector-group {
+    margin-bottom: 15px;
+    text-align: left;
+    border: 1px dashed var(--border-color);
+    padding: 10px;
+    border-radius: 5px;
+}
+.modal-options .pizza-flavor-selector-group h5 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+.modal-options .pizza-flavor-selector-group select {
+    margin-bottom: 0; /* Remove margin do select dentro do grupo */
+}
+
+.modal-quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+.modal-quantity-control button {
+    background-color: var(--primary-red);
+    color: var(--text-light);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.modal-quantity-control button:hover {
+    background-color: #a00;
+}
+.modal-quantity-control span {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+.modal-item-price {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--primary-red);
+    margin-top: 10px;
+}
+
+/* Toast de Adicionar ao Carrinho */
+.add-to-cart-toast {
+    position: fixed;
+    bottom: 80px; /* Acima dos botões flutuantes */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--text-dark);
+    color: var(--text-light);
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 2001; /* Acima do modal */
+}
+.add-to-cart-toast.active {
+    opacity: 1;
+}
+
+/* Botões Flutuantes de Redes Sociais */
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1500; /* Acima do conteúdo, mas abaixo do modal */
+}
+.float-btn {
+    background-color: var(--whatsapp-green); /* Default para WhatsApp */
+    color: var(--text-light);
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.float-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+.float-btn.instagram-float {
+    background: var(--instagram-purple); /* Gradiente do Instagram */
+    font-size: 1.6rem; /* Ícone do Instagram um pouco menor */
+}
+
+
+/* Modal de Seleção de Sabores para Combos */
+#combo-flavor-modal {
+    z-index: 2005; /* Acima do modal de item, se necessário */
+}
+#combo-flavor-modal .modal-content {
+    max-height: 80vh; /* Limita a altura do modal para caber na tela */
+    overflow-y: auto; /* Permite rolar se o conteúdo for grande */
+}
+#combo-flavor-modal .flavor-selection-group {
+    margin-bottom: 15px; /* Mais espaçamento entre os seletores de sabor */
+    text-align: left;
+    border: 1px dashed var(--border-color);
+    padding: 10px;
+    border-radius: 5px;
+}
+#combo-flavor-modal .flavor-selection-group h5 {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-dark);
+}
+#combo-flavor-modal select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-dark);
+}
+#add-combo-to-cart-btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    header .logo {
+        width: 40px;
+    }
+    .whatsapp-header {
+        font-size: 0.85rem;
+    }
+    .cart-button {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    .cart-button span#cart-item-count {
+        font-size: 0.6rem;
+        padding: 0.1em 0.4em;
+        min-width: 1.3em;
+    }
+    #hero h2 {
+        font-size: 2rem;
+    }
+    #hero p {
+        font-size: 1rem;
+    }
+    .btn {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+    .promo-card h4 {
+        font-size: 1.3rem;
+    }
+    .promo-card .promo-price {
+        font-size: 1.5rem;
+    }
+    .menu-categories {
+        gap: 8px;
+    }
+    .menu-cat-btn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+    .menu-item-card h4 {
+        font-size: 1.2rem;
+    }
+    .menu-item-card .item-price {
+        font-size: 1.3rem;
+    }
+    .cart-item-details h4 {
+        font-size: 0.9rem;
+    }
+    .cart-item-price {
+        font-size: 0.9rem;
+    }
+    .cart-summary h3 {
+        font-size: 1.8rem;
+    }
+    .modal-content h4 {
+        font-size: 1.5rem;
+    }
+    .modal-quantity-control button {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+    }
+    .modal-quantity-control span {
+        font-size: 1.2rem;
+    }
+    .modal-item-price {
+        font-size: 1.5rem;
+    }
+    .floating-buttons {
+        bottom: 15px;
+        right: 15px;
+        gap: 8px;
+    }
+    .float-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+    }
+    .float-btn.instagram-float {
+        font-size: 1.4rem;
+    }
+    .add-to-cart-toast {
+        bottom: 70px;
+        padding: 10px 15px;
+        font-size: 0.8rem;
+    }
+}

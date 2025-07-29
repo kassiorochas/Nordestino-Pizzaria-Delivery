@@ -1,0 +1,28 @@
+{
+    "name": "Nordestino Pizzaria Delivery",
+    "short_name": "Nordestino Pizza",
+    "description": "Faça seu pedido na Nordestino Pizzaria de forma rápida e prática!",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#c90000",
+    "theme_color": "#c90000",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "icon/icon-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "icon/maskable_icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

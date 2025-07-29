@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nordestino Pizzaria Delivery</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon/favicon.ico" type="image/x-icon">
+    <meta name="theme-color" content="#c90000"> <!-- Cor da barra de status do navegador -->
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="icon/logo-nordestino-pizzaria.png" alt="Logo Nordestino Pizzaria" class="logo">
+            <h1>Nordestino Pizzaria</h1>
+            <p class="tagline">Delivery</p>
+        </div>
+        <div class="header-contact">
+            <!-- NOVO: Mensagem pré-preenchida para o WhatsApp do cabeçalho -->
+            <a href="https://wa.me/5511954699633?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%2Fapp%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" class="whatsapp-header"><i class="fab fa-whatsapp"></i> (11) 9.5469-9633</a>
+        </div>
+        <button id="view-cart-btn" class="cart-button">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="cart-item-count">0</span>
+        </button>
+    </header>
+
+    <main>
+        <section id="hero" class="section">
+            <div class="hero-overlay">
+                <h2>A verdadeira pizza nordestina na sua casa!</h2>
+                <p>Qualidade e sabor que você só encontra aqui. Peça já!</p>
+                <div class="hero-buttons">
+                    <button class="btn primary" onclick="document.getElementById('cardapio').scrollIntoView({behavior: 'smooth'}); document.querySelector('.menu-cat-btn[data-category=\'tradicionais\']').click();">Ver Cardápio</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="promocoes" class="section">
+            <h3 class="section-title">Nossas Promoções</h3>
+            <div class="promo-grid">
+                <div class="promo-card">
+                    <img src="images/combo-pizza-refri.jpeg" alt="Combo Pizza + Refri 1L">
+                    <h4>Combo Pizza + Refri 1L</h4>
+                    <p>1 Pizza Média Tradicional + 1 Refrigerante Guaraná 1L.</p>
+                    <span class="promo-price">R$ 36,00</span>
+                    <button class="btn primary add-to-cart-promo" data-item-id="combo-pizza-refri">Adicionar Combo</button>
+                </div>
+                <div class="promo-card">
+                    <img src="images/combo-pizza-dupla.jpeg" alt="Combo Pizza Dupla">
+                    <h4>Combo Pizza Dupla</h4>
+                    <p>2 Pizzas Grandes Tradicionais (verificar sabores no WhatsApp).</p>
+                    <span class="promo-price">R$ 60,00</span>
+                    <button class="btn primary add-to-cart-promo" data-item-id="combo-dupla">Adicionar Combo</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="cardapio" class="section">
+            <h3 class="section-title">Nosso Cardápio</h3>
+            <div class="menu-categories">
+                <button class="menu-cat-btn active" data-category="tradicionais">Pizzas Tradicionais</button>
+                <button class="menu-cat-btn" data-category="especiais">Pizzas Especiais</button>
+                <button class="menu-cat-btn" data-category="doces">Pizzas Doces</button>
+                <button class="menu-cat-btn" data-category="bordas">Bordas Recheadas</button>
+                <button class="menu-cat-btn" data-category="pasteis">Pastéis</button>
+                <button class="menu-cat-btn" data-category="coxinhas">Coxinhas</button>
+                <button class="menu-cat-btn" data-category="enroladinhos">Enroladinhos</button>
+                <button class="menu-cat-btn" data-category="batatas">Batatas</button>
+                <button class="menu-cat-btn" data-category="bebidas">Bebidas</button>
+            </div>
+            <div id="menu-items-container" class="menu-items-container">
+                <!-- Itens do cardápio serão carregados aqui pelo JS -->
+            </div>
+        </section>
+
+        <section id="cart" class="section hidden">
+            <h3 class="section-title">Seu Carrinho</h3>
+            <div id="cart-items" class="cart-items">
+                <!-- Itens do carrinho serão carregados aqui pelo JS -->
+            </div>
+            <div class="cart-summary">
+                <p>Subtotal: R$ <span id="cart-subtotal">0,00</span></p>
+                <p>Taxa de Entrega: R$ <span id="delivery-fee">0,00</span></p>
+                <h3>Total: R$ <span id="cart-total">0,00</span></h3>
+            </div>
+            <button id="continue-shopping-btn" class="btn secondary full-width">Continuar Comprando / Voltar ao Cardápio</button>
+            <button id="checkout-btn" class="btn primary full-width mt-1 disabled" disabled>Finalizar Pedido</button>
+        </section>
+
+        <section id="checkout" class="section hidden">
+            <h3 class="section-title">Finalizar Pedido</h3>
+            <form id="checkout-form" class="checkout-form">
+                <h4>Seus Dados</h4>
+                <div class="input-group">
+                    <label for="customer-name">Nome Completo:</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="input-group">
+                    <label for="customer-phone">Telefone / WhatsApp (com DDD):</label>
+                    <input type="tel" id="customer-phone" placeholder="Ex: 81993613802" required>
+                </div>
+
+                <h4>Opção de Entrega</h4>
+                <div class="radio-group">
+                    <input type="radio" id="delivery-option-delivery" name="delivery-option" value="delivery" checked>
+                    <label for="delivery-option-delivery">Entrega em Domicílio (R$ 5,00)</label>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="delivery-option-pickup" name="delivery-option" value="pickup">
+                    <label for="delivery-option-pickup">Retirar no Local</label>
+                </div>
+
+                <div id="delivery-address-group" class="delivery-address-group">
+                    <div class="input-group">
+                        <label for="customer-address">Rua e Número:</label>
+                        <input type="text" id="customer-address" placeholder="Ex: Rua Joaquim Coutinho, 73" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="customer-neighborhood">Bairro:</label>
+                        <input type="text" id="customer-neighborhood" placeholder="Seu Bairro" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="customer-complement">Ponto de Referência / Complemento (Opcional):</label>
+                        <input type="text" id="customer-complement">
+                    </div>
+                </div>
+
+                <h4>Método de Pagamento</h4>
+                <div class="radio-group">
+                    <input type="radio" id="payment-money" name="payment-method" value="money">
+                    <label for="payment-money">Dinheiro</label>
+                </div>
+                <div id="change-for-group" class="input-group hidden">
+                    <label for="change-for">Precisa de troco para quanto? (Opcional)</label>
+                    <input type="number" id="change-for" step="0.01" min="0">
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="payment-card" name="payment-method" value="card">
+                    <label for="payment-card">Cartão na Entrega</label>
+                </div>
+                <div class="radio-group">
+                    <input type="radio" id="payment-pix" name="payment-method" value="pix" checked>
+                    <label for="payment-pix">PIX</label>
+                </div>
+
+                <div class="input-group">
+                    <label for="order-notes">Observações do Pedido (Opcional):</label>
+                    <textarea id="order-notes" rows="3" placeholder="Ex: Sem cebola, pizza bem passada, etc."></textarea>
+                </div>
+
+                <button type="submit" class="btn primary full-width mt-2">Confirmar e Enviar Pedido</button>
+            </form>
+            <button id="back-to-cart-btn" class="btn secondary full-width mt-1">Voltar ao Carrinho</button>
+        </section>
+
+        <section id="order-confirmation" class="section hidden">
+            <h3 class="section-title">Pedido Enviado com Sucesso!</h3>
+            <p>Seu pedido foi enviado para a Nordestino Pizzaria. Em breve entraremos em contato para confirmar os detalhes.</p>
+            <p class="confirmation-message"><i class="fas fa-check-circle"></i> Agradecemos a preferência!</p>
+            <button class="btn primary full-width" onclick="location.reload()">Fazer Novo Pedido</button>
+        </section>
+    </main>
+
+    <footer>
+        <p><strong>Nordestino Pizzaria Delivery</strong></p>
+        <p><i class="fas fa-map-marker-alt"></i> Rua Joaquim Coutinho, 73, Glória do Goitá - PE</p>
+        <p><i class="fas fa-phone-alt"></i> (81) 9.9361-3802</p>
+        <p><i class="fas fa-clock"></i> Terça a Sábado: 18h às 22h | Domingo: 17h às 22h</p>
+        <p>&copy; 2025 Nordestino Pizzaria. Todos os direitos reservados.</p>
+        <p class="developed-by">Desenvolvido por Kássio Rocha</p>
+    </footer>
+
+    <!-- Botões Flutuantes -->
+    <div class="floating-buttons">
+        <!-- NOVO: Mensagem pré-preenchida para o WhatsApp flutuante -->
+        <a href="https://wa.me/5511954699633?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%2Fapp%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" class="float-btn whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://instagram.com/nordestinopizzaria1" target="_blank" class="float-btn instagram-float"><i class="fab fa-instagram"></i></a>
+    </div>
+
+    <!-- Modal de Detalhes do Item -->
+    <div id="item-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modal-item-image" src="" alt="Imagem do Item">
+            <h4 id="modal-item-name"></h4>
+            <p id="modal-item-description"></p>
+            <div id="modal-item-options" class="modal-options">
+                <!-- Opções de tamanho/borda/observações -->
+            </div>
+            <div class="modal-quantity-control">
+                <button class="decrease-quantity-modal">-</button>
+                <span class="current-quantity-modal">1</span>
+                <button class="increase-quantity-modal">+</button>
+            </div>
+            <div class="input-group">
+                <label for="item-notes">Observações para este item (Opcional):</label>
+                <textarea id="item-notes" rows="2" placeholder="Ex: Sem cebola, bem passado."></textarea>
+            </div>
+            <p class="modal-item-price">Total: R$ <span id="modal-price-value">0,00</span></p>
+            <button id="add-to-cart-modal-btn" class="btn primary full-width">Adicionar ao Carrinho</button>
+        </div>
+        <div id="add-to-cart-toast" class="add-to-cart-toast hidden">
+            Item adicionado ao carrinho!
+        </div>
+    </div>
+
+    <!-- Modal de Seleção de Sabores para Combos -->
+    <div id="combo-flavor-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="close-combo-modal">&times;</span>
+            <h4 id="combo-modal-title"></h4>
+            <p>Selecione os sabores para suas pizzas tradicionais:</p>
+            <div id="flavor-selection-container">
+                <!-- Seleções de sabor serão geradas aqui -->
+            </div>
+            <button id="add-combo-to-cart-btn" class="btn primary full-width mt-2">Adicionar Combo ao Carrinho</button>
+        </div>
+    </div>
+
+    <script>
+        // Registro do Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registered successfully:', registration);
+                    })
+                    .catch(error => {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
