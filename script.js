@@ -2,9 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const PIZZARIA_WHATSAPP = '5581993613802'; // WhatsApp da Pizzaria
     const ENTREGA_PADRAO = 3.00; // Taxa de entrega padrão
 
-    // Dados do Cardápio COMPLETOS (Extraído das fotos do cardápio real)
+    // =========================
+    // DADOS DO CARDÁPIO
+    // =========================
     const menuItems = [
-        // PIZZAS TRADICIONAIS (Média R$33,00 | Grande R$36,00) - Você pode incluir até dois sabores.
+        // PIZZAS TRADICIONAIS (Média R$33,00 | Grande R$36,00)
         { id: 'mussarela', name: 'Mussarela', description: 'Molho, mussarela, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-mussarela.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'calabresa', name: 'Calabresa', description: 'Molho, mussarela, calabresa e cebola.', category: 'tradicionais', image: 'images/pizza-calabresa.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'frango-catupiry', name: 'Frango c/ Catupiry', description: 'Molho, mussarela, frango, catupiry, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-catupiry.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
@@ -22,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'portuguesa', name: 'Portuguesa', description: 'Molho, mussarela, presunto, ovo, cebola, azeitona, orégano.', category: 'tradicionais', image: 'images/pizza-portuguesa.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'quatro-queijos', name: 'Quatro Queijos', description: 'Molho, mussarela, provolone, parmesão, gorgonzola, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-quatro-queijos.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
-        // PIZZAS ESPECIAIS (Média R$45,00 | Grande R$55,00 ou Média R$40,00 | Grande R$43,00)
+        // PIZZAS ESPECIAIS
         { id: 'camarao', name: 'Camarão', description: 'Molho, mussarela, camarão, catupiry, orégano, azeitona.', category: 'especiais', image: 'images/pizza-camarao.jpeg', priceOptions: { media: { size: 'Média', price: 45.00 }, grande: { size: 'Grande', price: 55.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'atum', name: 'Atum', description: 'Molho, mussarela, atum, cebola, orégano, azeitona.', category: 'especiais', image: 'images/pizza-atum.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'nordestina-pizza', name: 'Nordestina', description: 'Molho, mussarela, carne de sol desfiada, orégano, azeitona.', category: 'especiais', image: 'images/pizza-nordestina.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
@@ -33,14 +35,14 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'strogonoff', name: 'Strogonoff', description: 'Molho, mussarela, frango, milho, batata palha, azeitona, orégano.', category: 'especiais', image: 'images/pizza-strogonoff.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'palermo', name: 'Palermo', description: 'Molho, mussarela, charque, milho, cebola, azeitona, orégano.', category: 'especiais', image: 'images/pizza-palermo.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
-        // PIZZAS DOCES (Qualquer uma por Média R$33,00 | Grande R$36,00)
+        // PIZZAS DOCES
         { id: 'brigadeiro', name: 'Brigadeiro', description: 'Chocolate, granulado.', category: 'doces', image: 'images/pizza-brigadeiro.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'beijinho', name: 'Beijinho', description: 'Doce de leite, coco ralado.', category: 'doces', image: 'images/pizza-beijinho.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'cartola', name: 'Cartola', description: 'Banana, canela.', category: 'doces', image: 'images/pizza-cartola.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'romeu-e-julieta', name: 'Romeu e Julieta', description: 'Doce de goiaba, catupiry.', category: 'doces', image: 'images/pizza-romeu-e-julieta.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'm-m', name: 'M&M', description: 'Chocolate, M&M.', category: 'doces', image: 'images/pizza-m-m.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
-        // BORDAS RECHEADAS (R$7,00 ou R$12,00)
+        // BORDAS
         { id: 'borda-chocolate', name: 'Borda Recheada de Chocolate', description: 'Recheio cremoso de chocolate na borda.', category: 'bordas', image: 'images/borda-chocolate.jpeg', priceOptions: { unica: { size: 'Única', price: 7.00 } }, defaultSize: 'unica' },
         { id: 'borda-catupiry', name: 'Borda Recheada de Catupiry', description: 'Recheio cremoso de Catupiry na borda.', category: 'bordas', image: 'images/borda-catupiry.jpeg', priceOptions: { unica: { size: 'Única', price: 7.00 } }, defaultSize: 'unica' },
         { id: 'borda-cheddar', name: 'Borda Recheada de Cheddar', description: 'Recheio cremoso de Cheddar na borda.', category: 'bordas', image: 'images/borda-cheddar.jpeg', priceOptions: { unica: { size: 'Única', price: 7.00 } }, defaultSize: 'unica' },
@@ -48,75 +50,63 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: 'borda-catupiry-origina', name: 'Borda Especial Catupiry Origina', description: 'Recheio generoso de Catupiry Original na borda.', category: 'bordas', image: 'images/borda-catupiry-origina.jpeg', priceOptions: { unica: { size: 'Única', price: 12.00 } }, defaultSize: 'unica' },
         { id: 'borda-creme-cheese', name: 'Borda Especial Creme Cheese', description: 'Recheio generoso de Creme Cheese na borda.', category: 'bordas', image: 'images/borda-creme-cheese.jpeg', priceOptions: { unica: { size: 'Única', price: 12.00 } }, defaultSize: 'unica' },
 
-
-
-
-
-
-
         // BEBIDAS
         {
-  id: 'refrigerante-coca-1l',
-  name: 'Coca-Cola 1L/2L',
-  description: 'Coca-Cola tradicional.',
-  category: 'bebidas',
-  image: 'images/refri-coca-1l.jpeg',
-  priceOptions: {
-    '1l': { size: '1L', price: 9.00 },
-    '2l': { size: '2L', price: 13.00 }
-  },
-  defaultSize: '1l'
-},
+            id: 'refrigerante-coca-1l',
+            name: 'Coca-Cola 1L/2L',
+            description: 'Coca-Cola tradicional.',
+            category: 'bebidas',
+            image: 'images/refri-coca-1l.jpeg',
+            priceOptions: { '1l': { size: '1L', price: 9.00 }, '2l': { size: '2L', price: 13.00 } },
+            defaultSize: '1l'
+        },
         {
-  id: 'guarana',
-  name: 'Guaraná',
-  description: 'Refrigerante Guaraná.',
-  category: 'bebidas',
-  image: 'images/guarana-2l.jpeg',
-  priceOptions: {
-    '1l': { size: '1L', price: 7.00 },
-    '2l': { size: '2L', price: 10.00 }
-  },
-  defaultSize: '1l'
-},
-        // Fanta (1L e 2L)
-{
-  id: 'refrigerante-fanta-1l',
-  name: 'Fanta 1L/2L',
-  description: 'Fanta Laranja.',
-  category: 'bebidas',
-  image: 'images/refri-fanta-1l.jpeg',
-  priceOptions: {
-    '1l': { size: '1L', price: 8.00 },
-    '2l': { size: '2L', price: 10.00 }
-  },
-  defaultSize: '1l'
-},
+            id: 'guarana',
+            name: 'Guaraná',
+            description: 'Refrigerante Guaraná.',
+            category: 'bebidas',
+            image: 'images/guarana-2l.jpeg',
+            priceOptions: { '1l': { size: '1L', price: 7.00 }, '2l': { size: '2L', price: 10.00 } },
+            defaultSize: '1l'
+        },
+        {
+            id: 'refrigerante-fanta-1l',
+            name: 'Fanta 1L/2L',
+            description: 'Fanta Laranja.',
+            category: 'bebidas',
+            image: 'images/refri-fanta-1l.jpeg',
+            priceOptions: { '1l': { size: '1L', price: 8.00 }, '2l': { size: '2L', price: 10.00 } },
+            defaultSize: '1l'
+        },
         { id: 'refrigerante-em-lata', name: 'Refrigerante em Lata', description: 'Refrigerante em Lata (vários sabores).', category: 'bebidas', image: 'images/refri-em-lata.jpeg', priceOptions: { unica: { size: 'Lata', price: 5.00 } }, defaultSize: 'unica' },
         { id: 'h2o-500ml', name: 'H2O 500ml', description: 'Bebida levemente gaseificada H2O 500ml.', category: 'bebidas', image: 'images/h2o-500ml.jpeg', priceOptions: { unica: { size: '500ml', price: 6.00 } }, defaultSize: 'unica' },
         { id: 'agua-mineral', name: 'Água Mineral 500ml', description: 'Água mineral sem gás 500ml.', category: 'bebidas', image: 'images/agua-mineral.jpeg', priceOptions: { unica: { size: '500ml', price: 2.00 } }, defaultSize: 'unica' }
     ];
-// Forçar pizzas a abrirem com 'Grande' por padrão (sem alterar os dados originais)
-(function(){
-  try{menuItems.forEach(item => {
-    if (["tradicionais", "especiais", "doces"].includes(item.category)) {
-        item.allowTwoFlavors = true;
-        item.defaultSize = 'grande';
-    }
-});
-  }catch(e){ console.warn('Default grande patch:', e); }
-})();
 
+    // Força pizzas a abrirem com 'Grande' como padrão
+    (function () {
+        try {
+            menuItems.forEach(item => {
+                if (["tradicionais", "especiais", "doces"].includes(item.category)) {
+                    item.allowTwoFlavors = true;
+                    item.defaultSize = 'grande';
+                }
+            });
+        } catch (e) { console.warn('Default grande patch:', e); }
+    })();
 
-    // Cardápio de Combos (IDs referem-se a itens reais no menuItems ou são únicos para combos)
+    // =========================
+    // COMBOS (agora com includesBeverage)
+    // =========================
     const comboItems = [
         {
-            id: 'combo-pizza-refri', // ID CORRIGIDO
+            id: 'combo-pizza-refri',
             name: 'Combo Pizza + Refri 1L',
             description: '1 Pizza Média Tradicional + 1 Refrigerante Guaraná 1L.',
             price: 36.00,
             image: 'images/combo-pizza-refri.jpeg',
-            pizzasIncluded: 1 // Quantidade de pizzas no combo
+            pizzasIncluded: 1,
+            includesBeverage: true // <- ESTE dispensa o lembrete
         },
         {
             id: 'combo-dupla',
@@ -124,24 +114,24 @@ document.addEventListener('DOMContentLoaded', () => {
             description: '2 Pizzas Grandes Tradicionais.',
             price: 60.00,
             image: 'images/combo-pizza-dupla.jpeg',
-            pizzasIncluded: 2 // Quantidade de pizzas no combo
+            pizzasIncluded: 2,
+            includesBeverage: false // <- NÃO dispensa o lembrete
         }
     ];
 
-    let cart = []; // Armazena os itens no carrinho
-    let currentModalItem = null; // Item atualmente no modal de detalhes de item
-    let currentModalQuantity = 1; // Quantidade atual no modal de detalhes de item
-    let currentComboAdding = null; // Combo que está sendo adicionado no modal de sabores
+    // =========================
+    // ESTADO & ELEMENTOS
+    // =========================
+    let cart = [];
+    let currentModalItem = null;
+    let currentModalQuantity = 1;
+    let currentComboAdding = null;
 
-    // Elementos do DOM
-    const logoContainer = document.querySelector('header .logo-container'); // NOVO: Elemento do logo
+    const logoContainer = document.querySelector('header .logo-container');
     const viewCartBtn = document.getElementById('view-cart-btn');
     const cartItemCount = document.getElementById('cart-item-count');
     const menuItemsContainer = document.getElementById('menu-items-container');
-    const menuCatBtns = document.querySelectorAll('.menu-cat-btn');
     const cartSection = document.getElementById('cart');
-    const checkoutSection = document.getElementById('checkout');
-    const orderConfirmationSection = document.getElementById('order-confirmation');
     const cartItemsDiv = document.getElementById('cart-items');
     const cartSubtotalSpan = document.getElementById('cart-subtotal');
     const deliveryFeeSpan = document.getElementById('delivery-fee');
@@ -154,72 +144,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const deliveryAddressGroup = document.getElementById('delivery-address-group');
     const changeForGroup = document.getElementById('change-for-group');
     const paymentMoney = document.getElementById('payment-money');
-    const paymentPix = document.getElementById('payment-pix'); // NOVO: Opção PIX
+    const paymentPix = document.getElementById('payment-pix');
 
-    // Modal de Detalhes do Item (para itens individuais do cardápio)
+    // Modal de item
     const itemDetailModal = document.getElementById('item-detail-modal');
     const closeModalBtn = itemDetailModal.querySelector('.close-button');
     const modalItemImage = document.getElementById('modal-item-image');
     const modalItemName = document.getElementById('modal-item-name');
     const modalItemDescription = document.getElementById('modal-item-description');
     const modalItemOptions = document.getElementById('modal-item-options');
-    const modalItemNotes = document.getElementById('item-notes'); // NOVO: Observações por item
+    const modalItemNotes = document.getElementById('item-notes');
     const modalPriceValue = document.getElementById('modal-price-value');
     const decreaseQuantityModalBtn = itemDetailModal.querySelector('.decrease-quantity-modal');
     const increaseQuantityModalBtn = itemDetailModal.querySelector('.increase-quantity-modal');
     const currentQuantityModalSpan = itemDetailModal.querySelector('.current-quantity-modal');
     const addToCartModalBtn = document.getElementById('add-to-cart-modal-btn');
-    const addToCartToast = document.getElementById('add-to-cart-toast');
 
-    // NOVO: Modal de Seleção de Sabores para Combos
+    // Modal de sabores do combo
     const comboFlavorModal = document.getElementById('combo-flavor-modal');
     const closeComboModalBtn = document.getElementById('close-combo-modal');
     const comboModalTitle = document.getElementById('combo-modal-title');
     const flavorSelectionContainer = document.getElementById('flavor-selection-container');
     const addComboToCartBtn = document.getElementById('add-combo-to-cart-btn');
 
-    // Lista de pizzas tradicionais para seleção de combos
     const tradicionaisPizzas = menuItems.filter(item => item.category === 'tradicionais');
 
-    // Funções Auxiliares
+    // =========================
+    // UTILS
+    // =========================
     function formatCurrency(value) {
         return value.toFixed(2).replace('.', ',');
     }
 
     function showToast(message) {
-        addToCartToast.textContent = message;
-        addToCartToast.classList.add('active');
-        setTimeout(() => {
-            addToCartToast.classList.remove('active');
-        }, 2000); // Esconde o toast após 2 segundos
+        const toast = document.getElementById('add-to-cart-toast');
+        toast.textContent = message;
+        toast.classList.add('active');
+        setTimeout(() => toast.classList.remove('active'), 2000);
     }
 
-    // Navegação de Seções
     function navigateToSection(sectionId) {
         document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
         document.getElementById(sectionId).classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Renderiza itens do cardápio
     function renderMenuItems(category = 'tradicionais') {
-        menuItemsContainer.innerHTML = ''; // Limpa os itens existentes
-
+        menuItemsContainer.innerHTML = '';
         const itemsToRender = menuItems.filter(item => item.category === category);
-
         if (itemsToRender.length === 0) {
             menuItemsContainer.innerHTML = '<p class="no-items-message">Nenhum item encontrado nesta categoria.</p>';
             return;
         }
-
         itemsToRender.forEach(item => {
             const card = document.createElement('div');
             card.classList.add('menu-item-card');
             card.dataset.itemId = item.id;
             card.dataset.itemCategory = item.category;
-
             const defaultPrice = item.priceOptions[item.defaultSize]?.price || Object.values(item.priceOptions)[0].price;
-
             card.innerHTML = `
                 <img src="${item.image}" alt="${item.name}">
                 <div class="item-info">
@@ -230,16 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             menuItemsContainer.appendChild(card);
         });
-
-        // Adiciona event listeners aos novos cards
         document.querySelectorAll('.menu-item-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                openItemDetailModal(card.dataset.itemId);
-            });
+            card.addEventListener('click', () => openItemDetailModal(card.dataset.itemId));
         });
     }
 
-    // Calcula e atualiza o carrinho
+    // =========================
+    // CARRINHO
+    // =========================
     function updateCart() {
         cartItemsDiv.innerHTML = '';
         let subtotal = 0;
@@ -269,37 +249,33 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        const deliveryFee = 0; // Não incluir taxa por padrão no carrinho
-        const total = subtotal; // Total sem taxa de entrega
-
+        const total = subtotal;
         cartSubtotalSpan.textContent = formatCurrency(subtotal);
         cartTotalSpan.textContent = formatCurrency(total);
         cartItemCount.textContent = itemCount;
 
-        // Torna o carrinho mais visível quando há itens
         const cartCtaMessage = document.getElementById('cart-cta-message');
-        const checkoutBtn = document.getElementById('checkout-btn');
-        
+
         if (itemCount > 0) {
             viewCartBtn.classList.add('cart-with-items');
-            
-            // Verifica se há bebidas no carrinho ou combos que incluem bebidas
-            const hasBeverage = cart.some(item => {
-                // Se é uma bebida da categoria bebidas
-                if (item.category === 'bebidas') return true;
-                // Se é um combo (que sempre inclui bebida)
-                if (item.isCombo) return true;
-                return false;
-            });
-            
+
+            // *** Regra do lembrete: só conta bebida OU combo com bebida (Combo 1) ***
+            const hasBeverage = cart.some(item =>
+                item.category === 'bebidas' || item.includesBeverage === true
+            );
+
             if (!hasBeverage) {
-                cartCtaMessage.innerHTML = '🥤 Que tal uma bebida gelada para acompanhar? <a href="#" onclick="showBeverages()" style="color: white; text-decoration: underline;">Ver bebidas</a>';
+                // IMPORTANTE: usa return no onclick e previne o default
+                cartCtaMessage.innerHTML =
+                    '🥤 Que tal uma bebida gelada para acompanhar? ' +
+                    '<a href="#" onclick="return showBeverages(event)" style="color: white; text-decoration: underline;">Ver bebidas</a>';
                 cartCtaMessage.classList.remove('hidden');
             } else {
-                cartCtaMessage.innerHTML = '🎉 Ótima escolha! Clique em "Finalizar Pedido" para concluir seu pedido.';
+                cartCtaMessage.innerHTML =
+                    '🎉 Ótima escolha! Clique em "Finalizar Pedido" para concluir seu pedido.';
                 cartCtaMessage.classList.remove('hidden');
             }
-            
+
             checkoutBtn.classList.add('checkout-btn-enhanced');
             checkoutBtn.disabled = false;
             checkoutBtn.classList.remove('disabled');
@@ -311,19 +287,18 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutBtn.classList.add('disabled');
         }
 
-        // Adiciona event listeners para os botões de quantidade do carrinho
+        // quantidade -/+
         document.querySelectorAll('.decrease-cart-item').forEach(button => {
             button.addEventListener('click', (e) => {
                 const index = parseInt(e.target.dataset.index);
                 if (cart[index].quantity > 1) {
                     cart[index].quantity--;
                 } else {
-                    cart.splice(index, 1); // Remove item se a quantidade for 0
+                    cart.splice(index, 1);
                 }
                 updateCart();
             });
         });
-
         document.querySelectorAll('.increase-cart-item').forEach(button => {
             button.addEventListener('click', (e) => {
                 const index = parseInt(e.target.dataset.index);
@@ -332,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Habilita/desabilita o botão de finalizar pedido
+        // botão finalizar
         if (cart.length === 0) {
             checkoutBtn.disabled = true;
             checkoutBtn.classList.add('disabled');
@@ -342,7 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Abre o modal de detalhes do item
+    // Detalhe do item
     function openItemDetailModal(itemId) {
         currentModalItem = menuItems.find(item => item.id === itemId);
         if (!currentModalItem) return;
@@ -350,10 +325,10 @@ document.addEventListener('DOMContentLoaded', () => {
         modalItemImage.src = currentModalItem.image;
         modalItemName.textContent = currentModalItem.name;
         modalItemDescription.textContent = currentModalItem.description;
-        modalItemNotes.value = ''; // Limpa observações anteriores
-        modalItemOptions.innerHTML = ''; // Limpa opções anteriores
+        modalItemNotes.value = '';
+        modalItemOptions.innerHTML = '';
 
-        // Adiciona seleção de sabores para pizzas que permitem dois sabores
+        // Sabores (meio a meio)
         if (currentModalItem.allowTwoFlavors) {
             const flavorSelectionDiv = document.createElement("div");
             flavorSelectionDiv.classList.add("flavor-selection-group");
@@ -373,31 +348,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const flavor1Select = document.getElementById("flavor1-select");
             const flavor2Select = document.getElementById("flavor2-select");
 
-            // Popula as opções de sabor baseado na categoria da pizza atual
             let availableFlavors = [];
             if (currentModalItem.category === 'tradicionais' || currentModalItem.category === 'especiais') {
-                // Pizzas salgadas podem misturar entre tradicionais e especiais
-                availableFlavors = menuItems.filter(item => 
-                    (item.category === 'tradicionais' || item.category === 'especiais') && 
+                availableFlavors = menuItems.filter(item =>
+                    (item.category === 'tradicionais' || item.category === 'especiais') &&
                     item.id !== currentModalItem.id
                 );
             } else if (currentModalItem.category === 'doces') {
-                // Pizzas doces só podem misturar com outras doces
-                availableFlavors = menuItems.filter(item => 
-                    item.category === 'doces' && 
+                availableFlavors = menuItems.filter(item =>
+                    item.category === 'doces' &&
                     item.id !== currentModalItem.id
                 );
             }
 
-            // Adiciona outras opções de sabor para o primeiro sabor
             availableFlavors.forEach(flavor => {
                 const option1 = document.createElement("option");
                 option1.value = flavor.name;
                 option1.textContent = flavor.name;
                 flavor1Select.appendChild(option1);
             });
-
-            // Adiciona opções para o segundo sabor
             availableFlavors.forEach(flavor => {
                 const option2 = document.createElement("option");
                 option2.value = flavor.name;
@@ -406,7 +375,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // Adiciona seleção de tamanho
+        // Tamanho
         const priceKeys = Object.keys(currentModalItem.priceOptions);
         if (priceKeys.length > 1) {
             const selectLabel = document.createElement('label');
@@ -423,11 +392,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 select.appendChild(option);
             });
 
-            // Define o tamanho padrão como 'grande' se disponível, senão usa o defaultSize
             const defaultKey = priceKeys.includes('grande') ? 'grande' : currentModalItem.defaultSize;
             select.value = defaultKey;
 
-            // Atualiza o preço quando o tamanho muda
             select.addEventListener('change', (e) => {
                 const selectedPrice = currentModalItem.priceOptions[e.target.value].price;
                 modalPriceValue.textContent = formatCurrency(selectedPrice * currentModalQuantity);
@@ -443,8 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentModalQuantity = 1;
         currentQuantityModalSpan.textContent = currentModalQuantity;
-        
-        // Define o preço inicial como 'grande' se disponível
+
         const initialSizeKey = Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize;
         modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[initialSizeKey]?.price || Object.values(currentModalItem.priceOptions)[0].price);
 
@@ -455,31 +421,26 @@ document.addEventListener('DOMContentLoaded', () => {
         itemDetailModal.classList.remove('active');
         currentModalItem = null;
         currentModalQuantity = 1;
-        modalItemNotes.value = ''; // Limpa observações ao fechar
-        document.getElementById('modal-item-size-select')?.removeEventListener('change', null); // Limpar listener
+        modalItemNotes.value = '';
+        document.getElementById('modal-item-size-select')?.removeEventListener('change', null);
     }
 
-    // Adicionar item ao carrinho a partir do modal
     addToCartModalBtn.addEventListener('click', () => {
         if (!currentModalItem) return;
 
         const selectedSizeElement = document.getElementById('modal-item-size-select');
         let selectedSizeKey = Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize;
-        if (selectedSizeElement) {
-            selectedSizeKey = selectedSizeElement.value;
-        }
+        if (selectedSizeElement) selectedSizeKey = selectedSizeElement.value;
+
         const itemNotes = modalItemNotes.value.trim();
 
-        // Captura os sabores selecionados se for uma pizza com dois sabores
         let flavorOptions = '';
         if (currentModalItem.allowTwoFlavors) {
             const flavor1Select = document.getElementById('flavor1-select');
             const flavor2Select = document.getElementById('flavor2-select');
-            
             const flavor1 = flavor1Select ? flavor1Select.value : currentModalItem.name;
             const flavor2 = flavor2Select ? flavor2Select.value : '';
-            
-            if (flavor2 && flavor2 !== '') {
+            if (flavor2) {
                 flavorOptions = `(Meio a meio: ${flavor1} + ${flavor2})`;
             } else {
                 flavorOptions = `(${flavor1})`;
@@ -497,7 +458,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const existingItemIndex = cart.findIndex(item => item.id === itemToAdd.id);
-
         if (existingItemIndex > -1) {
             cart[existingItemIndex].quantity += itemToAdd.quantity;
         } else {
@@ -509,24 +469,24 @@ document.addEventListener('DOMContentLoaded', () => {
         showToast(`"${itemToAdd.name}" adicionado ao carrinho!`);
     });
 
-    // Adicionar combo ao carrinho (Abre modal de seleção de sabores)
+    // =========================
+    // COMBO (modal de sabores)
+    // =========================
     document.querySelectorAll('.add-to-cart-promo').forEach(button => {
         button.addEventListener('click', (e) => {
             const comboId = e.target.dataset.itemId;
             currentComboAdding = comboItems.find(c => c.id === comboId);
-
             if (!currentComboAdding) {
-                console.error('Combo não encontrado:', comboId); // Para depuração
+                console.error('Combo não encontrado:', comboId);
                 return;
             }
 
             comboModalTitle.textContent = currentComboAdding.name;
-            flavorSelectionContainer.innerHTML = ''; // Limpa seleções anteriores
+            flavorSelectionContainer.innerHTML = '';
 
-            // Cria um seletor de sabor para cada pizza incluída no combo
             for (let i = 0; i < currentComboAdding.pizzasIncluded; i++) {
                 const flavorGroup = document.createElement('div');
-                flavorGroup.classList.add('pizza-flavor-selector-group'); // Adiciona classe para estilização
+                flavorGroup.classList.add('pizza-flavor-selector-group');
                 flavorGroup.innerHTML = `
                     <h5>Pizza ${i + 1}</h5>
                     <label for="combo-flavor1-${i}">Sabor 1:</label>
@@ -544,21 +504,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             comboFlavorModal.classList.add('active');
-            updateAddComboToCartButton(); // Atualiza estado do botão
+            updateAddComboToCartButton();
         });
     });
 
-    // Valida seleções de sabor do combo
-    flavorSelectionContainer.addEventListener('change', updateAddComboToCartButton);
     function updateAddComboToCartButton() {
         const selects = flavorSelectionContainer.querySelectorAll('.pizza-flavor-select');
         let allSelected = true;
-        selects.forEach(select => {
-            if (!select.value) {
-                allSelected = false;
-            }
-        });
-
+        selects.forEach(select => { if (!select.value) allSelected = false; });
         if (allSelected) {
             addComboToCartBtn.disabled = false;
             addComboToCartBtn.classList.remove('disabled');
@@ -567,135 +520,95 @@ document.addEventListener('DOMContentLoaded', () => {
             addComboToCartBtn.classList.add('disabled');
         }
     }
+    flavorSelectionContainer.addEventListener('change', updateAddComboToCartButton);
 
-    // Adicionar combo com sabores selecionados ao carrinho
     addComboToCartBtn.addEventListener('click', () => {
         const flavorGroups = flavorSelectionContainer.querySelectorAll('.pizza-flavor-selector-group');
         const selectedFlavors = Array.from(flavorGroups).map((group, index) => {
             const flavor1Select = group.querySelector(`#combo-flavor1-${index}`);
             const flavor2Select = group.querySelector(`#combo-flavor2-${index}`);
-            
             const flavor1 = flavor1Select ? flavor1Select.value : '';
             const flavor2 = flavor2Select ? flavor2Select.value : '';
-            
-            if (flavor2 && flavor2 !== '') {
-                return `Meio a meio: ${flavor1} + ${flavor2}`;
-            } else {
-                return flavor1 || 'Sabor não selecionado';
-            }
+            return flavor2 ? `Meio a meio: ${flavor1} + ${flavor2}` : (flavor1 || 'Sabor não selecionado');
         });
 
         const comboOptions = `(Sabores: ${selectedFlavors.join(', ')})`;
 
         const itemToAdd = {
-            id: currentComboAdding.id + '-' + selectedFlavors.map(f => f.replace(/\s/g, '_').replace(/[():]/g, '')).join('-'), // ID único com sabores
+            id: currentComboAdding.id + '-' + selectedFlavors.map(f => f.replace(/\s/g, '_').replace(/[():]/g, '')).join('-'),
             name: currentComboAdding.name,
             price: currentComboAdding.price,
-            quantity: 1, // Combos são adicionados um por vez
+            quantity: 1,
             selectedSize: null,
             options: comboOptions,
             isCombo: true,
+            includesBeverage: !!currentComboAdding.includesBeverage, // <- marca se este combo inclui bebida
             category: 'combo'
         };
 
-        cart.push(itemToAdd); // Sempre adiciona um novo combo, mesmo que o mesmo já esteja no carrinho com outros sabores
+        cart.push(itemToAdd);
         updateCart();
         showToast(`"${currentComboAdding.name}" adicionado ao carrinho!`);
         closeComboFlavorModal();
     });
 
-    // Fechar modal de seleção de sabores
-    closeComboModalBtn.addEventListener('click', closeComboFlavorModal);
     function closeComboFlavorModal() {
         comboFlavorModal.classList.remove('active');
         currentComboAdding = null;
     }
+    closeComboModalBtn.addEventListener('click', closeComboFlavorModal);
 
-    // Event Listeners Gerais
-    closeModalBtn.addEventListener('click', closeItemDetailModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === itemDetailModal) {
-            closeItemDetailModal();
-        }
-        if (event.target === comboFlavorModal) {
-            closeComboFlavorModal();
-        }
-    });
-
-    decreaseQuantityModalBtn.addEventListener('click', () => {
-        if (currentModalQuantity > 1) {
-            currentModalQuantity--;
-            currentQuantityModalSpan.textContent = currentModalQuantity;
-            const selectedSizeElement = document.getElementById('modal-item-size-select');
-            const selectedPriceKey = selectedSizeElement ? selectedSizeElement.value : currentModalItem.defaultSize;
-            modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[selectedPriceKey].price * currentModalQuantity);
-        }
-    });
-
-    increaseQuantityModalBtn.addEventListener('click', () => {
-        currentModalQuantity++;
-        currentQuantityModalSpan.textContent = currentModalQuantity;
-        const selectedSizeElement = document.getElementById('modal-item-size-select');
-        const selectedPriceKey = selectedSizeElement ? selectedSizeElement.value : currentModalItem.defaultSize;
-        modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[selectedPriceKey].price * currentModalQuantity);
-    });
-
-    // Filtrar cardápio por categoria
-    menuCatBtns.forEach(button => {
-        button.addEventListener('click', () => {
-            menuCatBtns.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            renderMenuItems(button.dataset.category);
+    // =========================
+    // NAVEGAÇÃO / BOTÕES
+    // =========================
+    document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderMenuItems(btn.dataset.category);
         });
     });
 
-    // Botão Ver Carrinho
     viewCartBtn.addEventListener('click', () => {
         navigateToSection('cart');
-        updateCart(); // Garante que o carrinho esteja atualizado
+        updateCart();
     });
 
-    // Botão Continuar Comprando (do carrinho)
     continueShoppingBtn.addEventListener('click', () => {
-        navigateToSection('cardapio'); // Volta para o cardápio
-        document.getElementById('hero').classList.remove('hidden'); // Exibe o hero
-        document.getElementById('promocoes').classList.remove('hidden'); // Exibe promoções
+        navigateToSection('cardapio');
+        document.getElementById('hero').classList.remove('hidden');
+        document.getElementById('promocoes').classList.remove('hidden');
     });
 
-    // Botão Voltar ao Carrinho (do checkout)
     backToCartBtn.addEventListener('click', () => {
         navigateToSection('cart');
     });
 
-    // Evento de clique no logo para ir para Home (Hero)
     logoContainer.addEventListener('click', () => {
         navigateToSection('hero');
         document.getElementById('promocoes').classList.remove('hidden');
         document.getElementById('cardapio').classList.remove('hidden');
-        // Reseta a categoria do cardápio para a padrão
         document.querySelector('.menu-cat-btn.active')?.classList.remove('active');
-        document.querySelector('.menu-cat-btn[data-category="tradicionais"]').classList.add('active');
+        document.querySelector('.menu-cat-btn[data-category="tradicionais"]')?.classList.add('active');
         renderMenuItems('tradicionais');
     });
 
-    // Botão Finalizar Pedido
     checkoutBtn.addEventListener('click', () => {
         navigateToSection('checkout');
-        updateCartWithDelivery(); // Atualiza o carrinho com a taxa de entrega correta
+        updateCartWithDelivery();
     });
 
-    // Função para atualizar carrinho com taxa de entrega (usada no checkout)
     function updateCartWithDelivery() {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         const deliveryFee = deliveryOptionDelivery.checked ? ENTREGA_PADRAO : 0;
         const total = subtotal + deliveryFee;
 
         cartSubtotalSpan.textContent = formatCurrency(subtotal);
-        deliveryFeeSpan.textContent = formatCurrency(deliveryFee);
+        const deliveryFeeSpanEl = document.getElementById('delivery-fee');
+        if (deliveryFeeSpanEl) deliveryFeeSpanEl.textContent = formatCurrency(deliveryFee);
         cartTotalSpan.textContent = formatCurrency(total);
     }
 
-    // Lógica para exibir/ocultar campos de endereço/troco/pix no checkout
     document.querySelectorAll('input[name="delivery-option"]').forEach(radio => {
         radio.addEventListener('change', () => {
             if (deliveryOptionDelivery.checked) {
@@ -705,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 deliveryAddressGroup.classList.add('hidden');
                 deliveryAddressGroup.querySelectorAll('input').forEach(input => input.required = false);
             }
-            updateCartWithDelivery(); // Atualiza o carrinho com a taxa correta
+            updateCartWithDelivery();
         });
     });
 
@@ -715,14 +628,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 changeForGroup.classList.remove('hidden');
             } else {
                 changeForGroup.classList.add('hidden');
-                document.getElementById('change-for').value = ''; // Limpa o valor do troco
+                document.getElementById('change-for').value = '';
             }
         });
     });
 
-    // Validação básica do formulário antes de enviar para o WhatsApp
     checkoutForm.addEventListener('submit', (e) => {
-        e.preventDefault(); // Impede o envio padrão do formulário
+        e.preventDefault();
 
         if (cart.length === 0) {
             showToast('Seu carrinho está vazio!');
@@ -735,7 +647,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
         const orderNotes = document.getElementById('order-notes').value.trim();
 
-        // Validação de campos obrigatórios
         if (!customerName || !customerPhone) {
             showToast('Por favor, preencha seu nome e telefone.');
             return;
@@ -770,15 +681,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (paymentMethod === 'card') {
             paymentDetails = '\nCartão na Entrega';
         } else if (paymentMethod === 'pix') {
-            // Dados PIX da pizzaria (fixos no código por enquanto)
-            const pixKey = '81982687572'; // Chave PIX
-            const pixName = 'Elisandra Ferreira de Andrade'; // Nome
-            const pixBank = 'Banco do Brasil'; // Banco
+            const pixKey = '81982687572';
+            const pixName = 'Elisandra Ferreira de Andrade';
+            const pixBank = 'Banco do Brasil';
             paymentDetails = `\nPIX (Favor enviar para):\nChave: ${pixKey}\nNome: ${pixName}\nBanco: ${pixBank}`;
         }
 
-
-        // Construir mensagem do WhatsApp
         let message = `*NOVO PEDIDO - Nordestino Pizzaria*\n\n`;
         message += `*Cliente:* ${customerName}\n`;
         message += `*Contato:* ${customerPhone}\n\n`;
@@ -789,58 +697,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         message += `\n*Resumo Financeiro:*\n`;
-        message += `Subtotal: R$ ${cartSubtotalSpan.textContent}\n`; // Pega o texto já formatado
+        message += `Subtotal: R$ ${cartSubtotalSpan.textContent}\n`;
         if (deliveryOption === 'delivery') {
-            message += `Taxa de Entrega: R$ ${deliveryFeeSpan.textContent}\n`; // Pega o texto já formatado
+            const deliveryFeeText = document.getElementById('delivery-fee')?.textContent || '0,00';
+            message += `Taxa de Entrega: R$ ${deliveryFeeText}\n`;
         }
-        message += `*Total: R$ ${cartTotalSpan.textContent}*\n\n`; // Pega o texto já formatado
+        message += `*Total: R$ ${cartTotalSpan.textContent}*\n\n`;
 
         message += `*Detalhes da Entrega:*\n`;
         message += `${deliveryOption === 'delivery' ? 'Entrega em domicílio' : 'Retirada no local'}${addressDetails}\n`;
         message += `*Pagamento:* ${paymentMethod === 'money' ? 'Dinheiro' : (paymentMethod === 'card' ? 'Cartão na entrega' : 'PIX')}${paymentDetails}\n\n`;
-        
+
         if (orderNotes) {
             message += `*Observações do Pedido (Geral):* ${orderNotes}\n\n`;
         }
-        
+
         message += `_Pedido enviado via App da Pizzaria._`;
 
-        // Codificar a mensagem para URL
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://api.whatsapp.com/send?phone=${PIZZARIA_WHATSAPP}&text=${encodedMessage}`;
-
-        // Abrir WhatsApp em uma nova janela
         window.open(whatsappUrl, '_blank');
-        
-        // Limpar carrinho e exibir confirmação
+
         setTimeout(() => {
             cart = [];
-            updateCart(); // Limpa o display do carrinho
-            checkoutForm.reset(); // Limpa o formulário
-            deliveryAddressGroup.classList.remove('hidden'); // Garante que o endereço apareça ao fazer novo pedido
-            changeForGroup.classList.add('hidden'); // Oculta o troco
-            
+            updateCart();
+            checkoutForm.reset();
+            deliveryAddressGroup.classList.remove('hidden');
+            changeForGroup.classList.add('hidden');
             navigateToSection('order-confirmation');
         }, 500);
     });
 
-    // Event listeners para botões de categoria do menu
-    document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove classe ativa de todos os botões
-            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-            // Adiciona classe ativa ao botão clicado
-            btn.classList.add('active');
-            // Renderiza os itens da categoria selecionada
-            const category = btn.dataset.category;
-            renderMenuItems(category);
-        });
-    });
-
-    // Função para verificar horário de funcionamento
+    // =========================
+    // HORÁRIO DE FUNCIONAMENTO
+    // =========================
     function checkOperatingHours() {
         const now = new Date();
-        const dayOfWeek = now.getDay(); // 0 = Domingo, 1 = Segunda, ..., 6 = Sábado
+        const dayOfWeek = now.getDay();
         const currentHour = now.getHours();
         const currentMinute = now.getMinutes();
         const currentTime = currentHour + (currentMinute / 60);
@@ -848,15 +741,15 @@ document.addEventListener('DOMContentLoaded', () => {
         let isOpen = false;
         let message = '';
 
-        if (dayOfWeek === 1) { // Segunda-feira
+        if (dayOfWeek === 1) {
             message = '🍕 Olá! Estamos fechados às segundas-feiras, mas você pode agendar seu pedido para amanhã! Funcionamento: Terça a Sábado: 18h às 22h | Domingo: 17h às 22h';
-        } else if (dayOfWeek >= 2 && dayOfWeek <= 6) { // Terça a Sábado
+        } else if (dayOfWeek >= 2 && dayOfWeek <= 6) {
             if (currentTime >= 18 && currentTime < 22) {
                 isOpen = true;
             } else {
                 message = '🕐 Estamos fora do horário de atendimento, mas você pode agendar seu pedido! Funcionamento: Terça a Sábado: 18h às 22h | Domingo: 17h às 22h';
             }
-        } else if (dayOfWeek === 0) { // Domingo
+        } else if (dayOfWeek === 0) {
             if (currentTime >= 17 && currentTime < 22) {
                 isOpen = true;
             } else {
@@ -864,20 +757,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        if (!isOpen && message) {
-            showOperatingHoursAlert(message);
-        }
+        if (!isOpen && message) showOperatingHoursAlert(message);
     }
 
-    // Função para exibir alerta de horário de funcionamento
     function showOperatingHoursAlert(message) {
-        // Remove alerta anterior se existir
         const existingAlert = document.querySelector('.operating-hours-alert');
-        if (existingAlert) {
-            existingAlert.remove();
-        }
+        if (existingAlert) existingAlert.remove();
 
-        // Cria novo alerta
         const alert = document.createElement('div');
         alert.className = 'operating-hours-alert';
         alert.innerHTML = `
@@ -886,41 +772,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button class="alert-close" onclick="this.parentElement.parentElement.remove()">×</button>
             </div>
         `;
-
-        // Adiciona o alerta no topo da página
         document.body.insertBefore(alert, document.body.firstChild);
     }
 
-    // Inicialização
-    renderMenuItems(); // Renderiza as pizzas tradicionais por padrão
-    updateCart(); // Inicializa o contador do carrinho
-    checkOperatingHours(); // Verifica horário de funcionamento
-    
-    // Ativa o primeiro botão de categoria por padrão
+    // =========================
+    // INICIALIZAÇÃO
+    // =========================
+    renderMenuItems(); // Tradicionais por padrão
+    updateCart();
+    checkOperatingHours();
     document.querySelector('.category-btn[data-category="tradicionais"]').classList.add('active');
-});
 
-
-    // Função para mostrar bebidas quando clicado no lembrete
-    function showBeverages() {
-    // Fecha o carrinho
-    document.getElementById('cart').classList.remove('active');
-    
-    // Navega para a seção do cardápio
-    navigateToSection('cardapio');
-    
-    // Remove classe ativa de todos os botões
-    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
-    
-    // Ativa o botão de bebidas
-    const bebidasBtn = document.querySelector('.category-btn[data-category="bebidas"]');
-    if (bebidasBtn) {
-        bebidasBtn.classList.add('active');
-        // Renderiza os itens de bebidas
-        renderMenuItems('bebidas');
+    // *** FUNÇÃO GLOBAL corrigida: abre a aba "Bebidas" ***
+    function showBeverages(ev) {
+        if (ev) ev.preventDefault();
+        // Mostrar seção cardápio
+        document.querySelectorAll('.section').forEach(s => s.classList.add('hidden'));
+        document.getElementById('cardapio').classList.remove('hidden');
+        // Ativar botão de bebidas e disparar o clique (reuso do listener da categoria)
+        const bebidasBtn = document.querySelector('.category-btn[data-category="bebidas"]');
+        if (bebidasBtn) {
+            document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+            bebidasBtn.classList.add('active');
+            bebidasBtn.click(); // renderiza os itens de bebidas
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return false;
     }
-}
-
-// Torna a função global para ser acessível pelo onclick
-window.showBeverages = showBeverages;
-
+    // expõe a função para o onclick do link
+    window.showBeverages = showBeverages;
+});
