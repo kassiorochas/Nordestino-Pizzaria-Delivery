@@ -26,7 +26,7 @@
         </div>
         <div class="header-contact">
             <!-- NOVO: Mensagem pré-preenchida para o WhatsApp do cabeçalho -->
-            <a href="https://wa.me/5511954699633?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%2Fapp%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" class="whatsapp-header"><i class="fab fa-whatsapp"></i> (11) 9.5469-9633</a>
+            <a href="https://wa.me/5581993613802?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" rel="noopener" class="whatsapp-header"><i class="fab fa-whatsapp"></i> Delivery (81) 9 9361-3802</a>
         </div>
         <button id="view-cart-btn" class="cart-button">
             <i class="fas fa-shopping-cart"></i>
@@ -68,15 +68,11 @@
         <section id="cardapio" class="section">
             <h3 class="section-title">Nosso Cardápio</h3>
             <div class="menu-categories">
-                <button class="menu-cat-btn active" data-category="tradicionais">Pizzas Tradicionais</button>
-                <button class="menu-cat-btn" data-category="especiais">Pizzas Especiais</button>
-                <button class="menu-cat-btn" data-category="doces">Pizzas Doces</button>
-                <button class="menu-cat-btn" data-category="bordas">Bordas Recheadas</button>
-                <button class="menu-cat-btn" data-category="pasteis">Pastéis</button>
-                <button class="menu-cat-btn" data-category="coxinhas">Coxinhas</button>
-                <button class="menu-cat-btn" data-category="enroladinhos">Enroladinhos</button>
-                <button class="menu-cat-btn" data-category="batatas">Batatas</button>
-                <button class="menu-cat-btn" data-category="bebidas">Bebidas</button>
+            <button class="category-btn" data-category="tradicionais">Pizzas Tradicionais</button>
+            <button class="category-btn" data-category="especiais">Pizzas Especiais</button>
+            <button class="category-btn" data-category="doces">Pizzas Doces</button>
+            <button class="category-btn" data-category="bordas">Bordas Recheadas</button>
+            <button class="category-btn" data-category="bebidas">Bebidas</button>
             </div>
             <div id="menu-items-container" class="menu-items-container">
                 <!-- Itens do cardápio serão carregados aqui pelo JS -->
@@ -85,12 +81,15 @@
 
         <section id="cart" class="section hidden">
             <h3 class="section-title">Seu Carrinho</h3>
+            <div id="cart-cta-message" class="cart-cta-message hidden">
+                🎉 Ótima escolha! Clique em "Finalizar Pedido" para concluir seu pedido.
+            </div>
             <div id="cart-items" class="cart-items">
                 <!-- Itens do carrinho serão carregados aqui pelo JS -->
             </div>
             <div class="cart-summary">
                 <p>Subtotal: R$ <span id="cart-subtotal">0,00</span></p>
-                <p>Taxa de Entrega: R$ <span id="delivery-fee">0,00</span></p>
+                <p class="delivery-info">💡 Se escolher entrega em domicílio, será acrescido R$ 3,00</p>
                 <h3>Total: R$ <span id="cart-total">0,00</span></h3>
             </div>
             <button id="continue-shopping-btn" class="btn secondary full-width">Continuar Comprando / Voltar ao Cardápio</button>
@@ -113,7 +112,7 @@
                 <h4>Opção de Entrega</h4>
                 <div class="radio-group">
                     <input type="radio" id="delivery-option-delivery" name="delivery-option" value="delivery" checked>
-                    <label for="delivery-option-delivery">Entrega em Domicílio (R$ 5,00)</label>
+                    <label for="delivery-option-delivery">Entrega em Domicílio (R$ 3,00)</label>
                 </div>
                 <div class="radio-group">
                     <input type="radio" id="delivery-option-pickup" name="delivery-option" value="pickup">
@@ -174,16 +173,18 @@
     <footer>
         <p><strong>Nordestino Pizzaria Delivery</strong></p>
         <p><i class="fas fa-map-marker-alt"></i> Rua Joaquim Coutinho, 73, Glória do Goitá - PE</p>
-        <p><i class="fas fa-phone-alt"></i> (81) 9.9361-3802</p>
         <p><i class="fas fa-clock"></i> Terça a Sábado: 18h às 22h | Domingo: 17h às 22h</p>
         <p>&copy; 2025 Nordestino Pizzaria. Todos os direitos reservados.</p>
-        <p class="developed-by">Desenvolvido por Kássio Rocha</p>
+        <p class="developed-by">Desenvolvido por Kássio Rocha 
+            <a href="https://wa.me/5511954699633" target="_blank" rel="noopener" style="margin-left: 8px; color: #25D366; text-decoration: none;"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.storepwa.com.br/" target="_blank" rel="noopener" style="margin-left: 8px; color: #007bff; text-decoration: none;"><i class="fas fa-globe"></i></a>
+        </p>
     </footer>
 
     <!-- Botões Flutuantes -->
     <div class="floating-buttons">
         <!-- NOVO: Mensagem pré-preenchida para o WhatsApp flutuante -->
-        <a href="https://wa.me/5511954699633?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%2Fapp%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" class="float-btn whatsapp-float"><i class="fab fa-whatsapp"></i></a>
+        <a href="https://wa.me/5581993613802?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%2Fapp%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" class="float-btn whatsapp-float"><i class="fab fa-whatsapp"></i></a>
         <a href="https://instagram.com/nordestinopizzaria1" target="_blank" class="float-btn instagram-float"><i class="fab fa-instagram"></i></a>
     </div>
 
