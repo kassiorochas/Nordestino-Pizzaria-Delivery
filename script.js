@@ -189,35 +189,103 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function renderMenuItems(category = 'tradicionais') {
+    
+// Mostrar/ocultar filtros de bebidas conforme categoria ativa
+function toggleBebidasFiltros(category) {
+    const filtros = document.getElementById('bebidas-filtros');
+    if (!filtros) return;
+    if (category === 'bebidas') {
+        filtros.classList.remove('hidden');
+    } else {
+        filtros.classList.add('hidden');
+    }
+}
+
+function renderMenuItems(category = 'tradicionais') {
         menuItemsContainer.innerHTML = '';
         const itemsToRender = menuItems.filter(item => item.category === category);
         if (itemsToRender.length === 0) {
             menuItemsContainer.innerHTML = '<p class="no-items-message">Nenhum item encontrado nesta categoria.</p>';
             return;
         }
-        itemsToRender.forEach(item => {
-            const card = document.createElement('div');
-            card.classList.add('menu-item-card');
-            card.dataset.itemId = item.id;
-            card.dataset.itemCategory = item.category;
-            const defaultPrice = item.priceOptions[item.defaultSize]?.price || Object.values(item.priceOptions)[0].price;
-            card.innerHTML = `
-                <img src="${item.image}" alt="${item.name}">
-                <div class="item-info">
-                    <h4>${item.name}</h4>
-                    <p>${item.description}</p>
-                    <p class="item-price">R$ ${formatCurrency(defaultPrice)}</p>
-                </div>
-            `;
-            menuItemsContainer.appendChild(card);
-        });
+
+        // Caso especial: BEBIDAS com tamanhos 1L e 2L separados em cards distintos
+        if (category === 'bebidas') {
+            itemsToRender.forEach(item => {
+                let criouVariantes = false;
+
+                ['1l','2l'].forEach(sizeKey => {
+                    if (item.priceOptions && item.priceOptions[sizeKey]) {
+                        criouVariantes = true;
+                        const card = document.createElement('div');
+                        card.classList.add('menu-item-card');
+                        card.dataset.itemId = item.id;
+                        card.dataset.itemCategory = item.category;
+                        card.dataset.sizeKey = sizeKey;
+
+                        // Tenta limpar sufixo "1L/2L" do nome original para evitar repetição
+                        let baseName = item.name.replace(/\s*1L\/2L\s*/gi, '').trim();
+                        if (!baseName) baseName = item.name;
+                        const displayName = baseName + ' ' + item.priceOptions[sizeKey].size;
+
+                        const price = item.priceOptions[sizeKey].price;
+                        card.innerHTML = `
+                            <img src="${item.image}" alt="${displayName}">
+                            <div class="item-info">
+                                <h4>${displayName}</h4>
+                                <p>${item.description}</p>
+                                <p class="item-price">R$ ${formatCurrency(price)}</p>
+                            </div>
+                        `;
+                        menuItemsContainer.appendChild(card);
+                    }
+                });
+
+                // Itens sem 1L/2L continuam aparecendo normalmente (ex.: Lata, Água/Suco)
+                if (!criouVariantes) {
+                    const card = document.createElement('div');
+                    card.classList.add('menu-item-card');
+                    card.dataset.itemId = item.id;
+                    card.dataset.itemCategory = item.category;
+                    const defaultPrice = item.priceOptions[item.defaultSize]?.price || Object.values(item.priceOptions)[0].price;
+                    card.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}">
+                        <div class="item-info">
+                            <h4>${item.name}</h4>
+                            <p>${item.description}</p>
+                            <p class="item-price">R$ ${formatCurrency(defaultPrice)}</p>
+                        </div>
+                    `;
+                    menuItemsContainer.appendChild(card);
+                }
+            });
+        } else {
+            // Demais categorias: comportamento padrão (um card por item)
+            itemsToRender.forEach(item => {
+                const card = document.createElement('div');
+                card.classList.add('menu-item-card');
+                card.dataset.itemId = item.id;
+                card.dataset.itemCategory = item.category;
+                const defaultPrice = item.priceOptions[item.defaultSize]?.price || Object.values(item.priceOptions)[0].price;
+                card.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                        <p class="item-price">R$ ${formatCurrency(defaultPrice)}</p>
+                    </div>
+                `;
+                menuItemsContainer.appendChild(card);
+            });
+        }
+
+        // Clique abre o modal já com o tamanho pré-selecionado (se houver)
         document.querySelectorAll('.menu-item-card').forEach(card => {
-            card.addEventListener('click', () => openItemDetailModal(card.dataset.itemId));
+            const preSize = card.dataset.sizeKey ? card.dataset.sizeKey : null;
+            card.addEventListener('click', () => openItemDetailModal(card.dataset.itemId, preSize));
         });
     }
-
-    // =========================
+// =========================
     // CARRINHO
     // =========================
     function updateCart() {
@@ -315,10 +383,11 @@ document.addEventListener('DOMContentLoaded', () => {
             checkoutBtn.disabled = false;
             checkoutBtn.classList.remove('disabled');
         }
+        if (typeof updateCartWithDelivery === 'function') { try { updateCartWithDelivery(); } catch(e){} }
     }
 
     // Detalhe do item
-    function openItemDetailModal(itemId) {
+    function openItemDetailModal(itemId, preselectSizeKey = null) {
         currentModalItem = menuItems.find(item => item.id === itemId);
         if (!currentModalItem) return;
 
@@ -392,7 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 select.appendChild(option);
             });
 
-            const defaultKey = priceKeys.includes('grande') ? 'grande' : currentModalItem.defaultSize;
+            const defaultKey = (preselectSizeKey && priceKeys.includes(preselectSizeKey))
+                ? preselectSizeKey
+                : (priceKeys.includes('grande') ? 'grande' : currentModalItem.defaultSize);
             select.value = defaultKey;
 
             select.addEventListener('change', (e) => {
@@ -411,7 +482,7 @@ document.addEventListener('DOMContentLoaded', () => {
         currentModalQuantity = 1;
         currentQuantityModalSpan.textContent = currentModalQuantity;
 
-        const initialSizeKey = Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize;
+        const initialSizeKey = (preselectSizeKey && Object.keys(currentModalItem.priceOptions).includes(preselectSizeKey)) ? preselectSizeKey : (Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize);
         modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[initialSizeKey]?.price || Object.values(currentModalItem.priceOptions)[0].price);
 
         itemDetailModal.classList.add('active');
@@ -519,6 +590,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addComboToCartBtn.disabled = true;
             addComboToCartBtn.classList.add('disabled');
         }
+        if (typeof updateCartWithDelivery === 'function') { try { updateCartWithDelivery(); } catch(e){} }
     }
     flavorSelectionContainer.addEventListener('change', updateAddComboToCartButton);
 
@@ -565,7 +637,9 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderMenuItems(btn.dataset.category);
+            const cat = btn.dataset.category;
+            renderMenuItems(cat);
+            if (typeof toggleBebidasFiltros === 'function') toggleBebidasFiltros(cat);
         });
     });
 
@@ -802,3 +876,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // expõe a função para o onclick do link
     window.showBeverages = showBeverages;
 });
+
+
+try {
+    checkoutBtn.addEventListener('click', () => {
+        setTimeout(()=>document.getElementById('customer-name')?.focus(), 0);
+        if (typeof updateCartWithDelivery === 'function') { try { updateCartWithDelivery(); } catch(e){} }
+    });
+} catch(e) {}
+
+try {
+    document.getElementById('customer-phone')?.addEventListener('input', (e)=>{
+        e.target.value = e.target.value.replace(/\D/g,'');
+    });
+} catch(e) {}

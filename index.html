@@ -40,7 +40,7 @@
                 <h2>A verdadeira pizza nordestina na sua casa!</h2>
                 <p>Qualidade e sabor que você só encontra aqui. Peça já!</p>
                 <div class="hero-buttons">
-                    <button class="btn primary" onclick="document.getElementById('cardapio').scrollIntoView({behavior: 'smooth'}); document.querySelector('.menu-cat-btn[data-category=\'tradicionais\']').click();">Ver Cardápio</button>
+                    <button class="btn primary" onclick="document.getElementById('cardapio').scrollIntoView({behavior: 'smooth'}); document.querySelector('.category-btn[data-category=\'tradicionais\']').click();">Ver Cardápio</button>
                 </div>
             </div>
         </section>
@@ -74,6 +74,12 @@
             <button class="category-btn" data-category="bordas">Bordas Recheadas</button>
             <button class="category-btn" data-category="bebidas">Bebidas</button>
             </div>
+            <div id="bebidas-filtros" class="menu-categories hidden">
+                <button class="category-btn" data-vol="1l">1 L</button>
+                <button class="category-btn" data-vol="2l">2 L</button>
+                <button class="category-btn" data-vol="lata">Lata</button>
+                <button class="category-btn" data-vol="agua">Água/Suco</button>
+            </div>
             <div id="menu-items-container" class="menu-items-container">
                 <!-- Itens do cardápio serão carregados aqui pelo JS -->
             </div>
@@ -89,6 +95,7 @@
             </div>
             <div class="cart-summary">
                 <p>Subtotal: R$ <span id="cart-subtotal">0,00</span></p>
+                <p>Entrega: R$ <span id="delivery-fee">0,00</span></p>
                 <p class="delivery-info">💡 Se escolher entrega em domicílio, será acrescido R$ 3,00</p>
                 <h3>Total: R$ <span id="cart-total">0,00</span></h3>
             </div>
