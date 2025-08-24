@@ -338,10 +338,19 @@ function renderMenuItems(category = 'tradicionais') {
             });
         }
 
-        const total = subtotal;
+        const total = subtotal; // Não adicionar taxa automaticamente
         cartSubtotalSpan.textContent = formatCurrency(subtotal);
         cartTotalSpan.textContent = formatCurrency(total);
         cartItemCount.textContent = itemCount;
+
+        // Adicionar mensagem informativa sobre taxa de entrega
+        const deliveryInfoDiv = document.getElementById('delivery-info-message');
+        if (deliveryInfoDiv && itemCount > 0) {
+            deliveryInfoDiv.innerHTML = '💡 Se escolher entrega em domicílio, será acrescida uma taxa de R$ 3,00';
+            deliveryInfoDiv.classList.remove('hidden');
+        } else if (deliveryInfoDiv) {
+            deliveryInfoDiv.classList.add('hidden');
+        }
 
         // Sempre manter carrinho visível
         const cartButton = document.getElementById('view-cart-btn');
@@ -663,6 +672,49 @@ function renderMenuItems(category = 'tradicionais') {
     }
     closeComboModalBtn.addEventListener('click', closeComboFlavorModal);
 
+    // Event listener para fechar modal de item (CORREÇÃO DO BUG)
+    closeModalBtn.addEventListener('click', closeItemDetailModal);
+
+    // Event listeners para botões de quantidade do modal
+    decreaseQuantityModalBtn.addEventListener('click', () => {
+        if (currentModalQuantity > 1) {
+            currentModalQuantity--;
+            currentQuantityModalSpan.textContent = currentModalQuantity;
+            
+            // Atualizar preço
+            const selectedSizeElement = document.getElementById('modal-item-size-select');
+            let selectedSizeKey = Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize;
+            if (selectedSizeElement) selectedSizeKey = selectedSizeElement.value;
+            
+            modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[selectedSizeKey].price * currentModalQuantity);
+        }
+    });
+
+    increaseQuantityModalBtn.addEventListener('click', () => {
+        currentModalQuantity++;
+        currentQuantityModalSpan.textContent = currentModalQuantity;
+        
+        // Atualizar preço
+        const selectedSizeElement = document.getElementById('modal-item-size-select');
+        let selectedSizeKey = Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize;
+        if (selectedSizeElement) selectedSizeKey = selectedSizeElement.value;
+        
+        modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[selectedSizeKey].price * currentModalQuantity);
+    });
+
+    // Fechar modal clicando fora dele
+    itemDetailModal.addEventListener('click', (e) => {
+        if (e.target === itemDetailModal) {
+            closeItemDetailModal();
+        }
+    });
+
+    comboFlavorModal.addEventListener('click', (e) => {
+        if (e.target === comboFlavorModal) {
+            closeComboFlavorModal();
+        }
+    });
+
     // =========================
     // NAVEGAÇÃO / BOTÕES
     // =========================
@@ -710,10 +762,28 @@ function renderMenuItems(category = 'tradicionais') {
         const deliveryFee = deliveryOptionDelivery.checked ? ENTREGA_PADRAO : 0;
         const total = subtotal + deliveryFee;
 
+        // Atualizar elementos da página de checkout
+        const checkoutSubtotalSpan = document.getElementById('checkout-subtotal');
+        const checkoutDeliveryFeeSpan = document.getElementById('checkout-delivery-fee');
+        const checkoutTotalSpan = document.getElementById('checkout-total');
+        
+        if (checkoutSubtotalSpan) checkoutSubtotalSpan.textContent = formatCurrency(subtotal);
+        if (checkoutDeliveryFeeSpan) checkoutDeliveryFeeSpan.textContent = formatCurrency(deliveryFee);
+        if (checkoutTotalSpan) checkoutTotalSpan.textContent = formatCurrency(total);
+        
+        // Mostrar/ocultar linha da taxa de entrega
+        const deliveryFeeRow = document.getElementById('delivery-fee-row');
+        if (deliveryFeeRow) {
+            if (deliveryOptionDelivery.checked) {
+                deliveryFeeRow.classList.remove('hidden');
+            } else {
+                deliveryFeeRow.classList.add('hidden');
+            }
+        }
+        
+        // Atualizar também o carrinho principal (sem taxa)
         cartSubtotalSpan.textContent = formatCurrency(subtotal);
-        const deliveryFeeSpanEl = document.getElementById('delivery-fee');
-        if (deliveryFeeSpanEl) deliveryFeeSpanEl.textContent = formatCurrency(deliveryFee);
-        cartTotalSpan.textContent = formatCurrency(total);
+        cartTotalSpan.textContent = formatCurrency(subtotal); // Sempre subtotal no carrinho
     }
 
     document.querySelectorAll('input[name="delivery-option"]').forEach(radio => {
@@ -923,3 +993,308 @@ try {
         e.target.value = e.target.value.replace(/\D/g,'');
     });
 } catch(e) {}
+
+
+// =========================
+// VALIDAÇÕES MELHORADAS
+// =========================
+
+// Validação de telefone brasileiro
+function validateBrazilianPhone(phone) {
+    // Remove todos os caracteres não numéricos
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    // Verifica se tem 10 ou 11 dígitos (com DDD)
+    if (cleanPhone.length < 10 || cleanPhone.length > 11) {
+        return false;
+    }
+    
+    // Verifica se o DDD é válido (11-99)
+    const ddd = cleanPhone.substring(0, 2);
+    if (parseInt(ddd) < 11 || parseInt(ddd) > 99) {
+        return false;
+    }
+    
+    // Para celular (11 dígitos), o 9º dígito deve ser 9
+    if (cleanPhone.length === 11 && cleanPhone[2] !== '9') {
+        return false;
+    }
+    
+    return true;
+}
+
+// Formatação de telefone brasileiro
+function formatBrazilianPhone(phone) {
+    const cleanPhone = phone.replace(/\D/g, '');
+    
+    if (cleanPhone.length === 10) {
+        return cleanPhone.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    } else if (cleanPhone.length === 11) {
+        return cleanPhone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    }
+    
+    return phone;
+}
+
+// Aplicar validações ao formulário
+try {
+    const phoneInput = document.getElementById('customer-phone');
+    const nameInput = document.getElementById('customer-name');
+    const addressInput = document.getElementById('customer-address');
+    const neighborhoodInput = document.getElementById('customer-neighborhood');
+    
+    if (phoneInput) {
+        // Formatação automática do telefone
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            // Limita a 11 dígitos
+            if (value.length > 11) {
+                value = value.substring(0, 11);
+            }
+            
+            e.target.value = value;
+            
+            // Aplica formatação visual
+            if (value.length >= 10) {
+                e.target.style.borderColor = validateBrazilianPhone(value) ? '#28a745' : '#dc3545';
+            } else {
+                e.target.style.borderColor = '';
+            }
+        });
+        
+        // Validação ao sair do campo
+        phoneInput.addEventListener('blur', function(e) {
+            const phone = e.target.value;
+            if (phone && !validateBrazilianPhone(phone)) {
+                showValidationError(e.target, 'Por favor, insira um telefone válido com DDD (ex: 81999887766)');
+            } else {
+                clearValidationError(e.target);
+                if (phone) {
+                    e.target.value = formatBrazilianPhone(phone);
+                }
+            }
+        });
+    }
+    
+    // Validação de nome
+    if (nameInput) {
+        nameInput.addEventListener('blur', function(e) {
+            const name = e.target.value.trim();
+            if (name && name.length < 2) {
+                showValidationError(e.target, 'Nome deve ter pelo menos 2 caracteres');
+            } else if (name && !/^[a-zA-ZÀ-ÿ\s]+$/.test(name)) {
+                showValidationError(e.target, 'Nome deve conter apenas letras');
+            } else {
+                clearValidationError(e.target);
+            }
+        });
+    }
+    
+    // Validação condicional de endereço
+    function validateAddressFields() {
+        const deliveryOption = document.querySelector('input[name="delivery-option"]:checked')?.value;
+        
+        if (deliveryOption === 'delivery') {
+            if (addressInput && !addressInput.value.trim()) {
+                showValidationError(addressInput, 'Endereço é obrigatório para entrega');
+                return false;
+            }
+            if (neighborhoodInput && !neighborhoodInput.value.trim()) {
+                showValidationError(neighborhoodInput, 'Bairro é obrigatório para entrega');
+                return false;
+            }
+        }
+        
+        clearValidationError(addressInput);
+        clearValidationError(neighborhoodInput);
+        return true;
+    }
+    
+    // Aplicar validação de endereço quando a opção de entrega mudar
+    document.querySelectorAll('input[name="delivery-option"]').forEach(radio => {
+        radio.addEventListener('change', validateAddressFields);
+    });
+    
+    // Validação no envio do formulário
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+        checkoutForm.addEventListener('submit', function(e) {
+            let isValid = true;
+            
+            // Validar nome
+            if (!nameInput.value.trim()) {
+                showValidationError(nameInput, 'Nome é obrigatório');
+                isValid = false;
+            }
+            
+            // Validar telefone
+            if (!phoneInput.value.trim()) {
+                showValidationError(phoneInput, 'Telefone é obrigatório');
+                isValid = false;
+            } else if (!validateBrazilianPhone(phoneInput.value)) {
+                showValidationError(phoneInput, 'Telefone inválido');
+                isValid = false;
+            }
+            
+            // Validar endereço se for entrega
+            if (!validateAddressFields()) {
+                isValid = false;
+            }
+            
+            // Validar método de pagamento
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+            if (!paymentMethod) {
+                alert('Por favor, selecione um método de pagamento');
+                isValid = false;
+            }
+            
+            if (!isValid) {
+                e.preventDefault();
+                // Focar no primeiro campo com erro
+                const firstError = document.querySelector('.input-error');
+                if (firstError) {
+                    firstError.focus();
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    }
+    
+} catch (error) {
+    console.log('Erro ao aplicar validações:', error);
+}
+
+// Funções auxiliares para mostrar/limpar erros de validação
+function showValidationError(input, message) {
+    clearValidationError(input);
+    
+    input.classList.add('input-error');
+    input.style.borderColor = '#dc3545';
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'validation-error';
+    errorDiv.textContent = message;
+    errorDiv.style.color = '#dc3545';
+    errorDiv.style.fontSize = '0.8rem';
+    errorDiv.style.marginTop = '4px';
+    
+    input.parentNode.appendChild(errorDiv);
+}
+
+function clearValidationError(input) {
+    if (input) {
+        input.classList.remove('input-error');
+        input.style.borderColor = '';
+        
+        const errorDiv = input.parentNode.querySelector('.validation-error');
+        if (errorDiv) {
+            errorDiv.remove();
+        }
+    }
+}
+
+// Adicionar estilos CSS para campos com erro
+const validationStyles = document.createElement('style');
+validationStyles.textContent = `
+    .input-error {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+    
+    .validation-error {
+        color: #dc3545;
+        font-size: 0.8rem;
+        margin-top: 4px;
+        display: block;
+    }
+    
+    .input-group input:focus.input-error,
+    .input-group textarea:focus.input-error,
+    .input-group select:focus.input-error {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+    }
+`;
+document.head.appendChild(validationStyles);
+
+
+// =========================
+// MELHORIAS DE ACESSIBILIDADE
+// =========================
+
+// Atualizar aria-label do carrinho dinamicamente
+function updateCartAccessibility() {
+    const cartButton = document.getElementById('view-cart-btn');
+    const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    
+    if (cartButton) {
+        const itemText = cartCount === 1 ? 'item' : 'itens';
+        cartButton.setAttribute('aria-label', `Ver carrinho de compras - ${cartCount} ${itemText}`);
+    }
+}
+
+// Interceptar a função updateCart existente para adicionar acessibilidade
+const originalUpdateCart = window.updateCart;
+if (typeof originalUpdateCart === 'function') {
+    window.updateCart = function() {
+        originalUpdateCart.apply(this, arguments);
+        updateCartAccessibility();
+    };
+} else {
+    // Se updateCart não existir ainda, criar um observer
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                const cartCount = document.getElementById('cart-item-count');
+                if (cartCount && mutation.target === cartCount) {
+                    updateCartAccessibility();
+                }
+            }
+        });
+    });
+    
+    const cartCountElement = document.getElementById('cart-item-count');
+    if (cartCountElement) {
+        observer.observe(cartCountElement, { childList: true, characterData: true, subtree: true });
+    }
+}
+
+// Melhorar navegação por teclado nos botões de categoria
+document.querySelectorAll('.category-btn').forEach(button => {
+    button.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
+    });
+});
+
+// Adicionar skip link para melhor navegação
+const skipLink = document.createElement('a');
+skipLink.href = '#cardapio';
+skipLink.textContent = 'Pular para o cardápio';
+skipLink.className = 'skip-link';
+skipLink.style.cssText = `
+    position: absolute;
+    top: -40px;
+    left: 6px;
+    background: var(--primary-red);
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    border-radius: 4px;
+    z-index: 10001;
+    transition: top 0.3s;
+`;
+
+skipLink.addEventListener('focus', function() {
+    this.style.top = '6px';
+});
+
+skipLink.addEventListener('blur', function() {
+    this.style.top = '-40px';
+});
+
+document.body.insertBefore(skipLink, document.body.firstChild);
+

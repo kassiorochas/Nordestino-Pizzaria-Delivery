@@ -1,5 +1,8 @@
-const CACHE_NAME = 'nordestino-pizzaria-cache-v1';
-const urlsToCache = [
+const CACHE_NAME = 'nordestino-pizzaria-cache-v2';
+const STATIC_CACHE = 'nordestino-static-v2';
+const DYNAMIC_CACHE = 'nordestino-dynamic-v2';
+
+const staticAssets = [
     './',
     './index.html',
     './style.css',
@@ -10,11 +13,14 @@ const urlsToCache = [
     './icon/logo-nordestino-pizzaria.png',
     './icon/icon-192x192.png',
     './icon/icon-512x512.png',
-    './icon/maskable_icon.png',
+    './icon/maskable_icon.png'
+];
+
+const imageAssets = [
     // Imagens do cardápio e promoções
     './images/hero-pizza-background.jpeg',
-    './images/combo-pizza-refri.jpeg',
-    './images/combo-pizza-dupla.jpeg',
+    './images/combo-pizza-refri-hq.jpeg',
+    './images/combo-pizza-dupla-hq.jpeg',
     './images/pizza-mussarela.jpeg',
     './images/pizza-calabresa.jpeg',
     './images/pizza-frango-catupiry.jpeg',
@@ -35,108 +41,130 @@ const urlsToCache = [
     './images/pizza-atum.jpeg',
     './images/pizza-nordestina.jpeg',
     './images/pizza-a-moda.jpeg',
-    './images/trindade.jpeg',
-    './images/italiano.jpeg',
+    './images/pizza-trindade.jpeg',
+    './images/pizza-italiano.jpeg',
     './images/pizza-modada-casa.jpeg',
-    './images/strogonoff.jpeg',
-    './images/palermo.jpeg',
-    './images/brigadeiro.jpeg',
-    './images/beijinho.jpeg',
-    './images/cartola.jpeg',
-    './images/romeu-e-julieta.jpeg',
-    './images/m-m.jpeg',
+    './images/pizza-strogonoff.jpeg',
+    './images/pizza-palermo.jpeg',
+    './images/pizza-brigadeiro.jpeg',
+    './images/pizza-beijinho.jpeg',
+    './images/pizza-cartola.jpeg',
+    './images/pizza-romeu-e-julieta.jpeg',
+    './images/pizza-m-m.jpeg',
     './images/borda-chocolate.jpeg',
     './images/borda-catupiry.jpeg',
     './images/borda-cheddar.jpeg',
     './images/borda-goiabada.jpeg',
     './images/borda-catupiry-origina.jpeg',
     './images/borda-creme-cheese.jpeg',
-    './images/pastel-queijo.jpeg',
-    './images/pastel-frango.jpeg',
-    './images/pastel-calabresa.jpeg',
-    './images/pastel-presunto.jpeg',
-    './images/pastel-calabresa-presunto.jpeg',
-    './images/pastel-queijo-frango.jpeg',
-    './images/pastel-queijo-calabresa.jpeg',
-    './images/pastel-queijo-presunto.jpeg',
-    './images/pastel-frango-calabresa.jpeg',
-    './images/pastel-frango-presunto.jpeg',
-    './images/pastel-camarao.jpeg',
-    './images/pastel-carne-sol.jpeg',
-    './images/pastel-carne-bacon.jpeg',
-    './images/coxinha-frango.jpeg',
-    './images/coxinha-queijo.jpeg',
-    './images/enroladinho-frango.jpeg',
-    './images/enroladinho-misto.jpeg',
-    './images/enroladinho-salsicha.jpeg',
-    './images/batata-frita.jpeg',
-    './images/batata-frita-cheddar-catupiry.jpeg',
     './images/refri-coca-1l.jpeg',
-    './images/guarana-2l.jpeg',
+    './images/refri-guarana-1l.jpeg',
     './images/refri-fanta-1l.jpeg',
     './images/refri-em-lata.jpeg',
     './images/h2o-500ml.jpeg',
-    './images/agua-mineral.jpeg',
-    // Font Awesome (apenas se for cachear, idealmente deixar vir do CDN)
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
-    // Google Fonts (apenas se for cachear, idealmente deixar vir do CDN)
-    'https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@400;700&display=swap'
+    './images/agua-mineral.jpeg'
 ];
 
+// Estratégia de cache: Cache First para recursos estáticos, Network First para conteúdo dinâmico
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log('Opened cache');
-                return cache.addAll(urlsToCache);
+        Promise.all([
+            caches.open(STATIC_CACHE).then(cache => {
+                console.log('Caching static assets');
+                return cache.addAll(staticAssets);
+            }),
+            caches.open(DYNAMIC_CACHE).then(cache => {
+                console.log('Pre-caching images');
+                return cache.addAll(imageAssets);
             })
+        ])
     );
-});
-
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                // Cache hit - return response
-                if (response) {
-                    return response;
-                }
-                return fetch(event.request).then(
-                    (response) => {
-                        // Check if we received a valid response
-                        if (!response || response.status !== 200 || response.type !== 'basic') {
-                            return response;
-                        }
-
-                        // IMPORTANT: Clone the response. A response is a stream
-                        // and can only be consumed once. We must clone the response
-                        // so that the browser can consume the original response and
-                        // we can consume the clone.
-                        const responseToCache = response.clone();
-
-                        caches.open(CACHE_NAME)
-                            .then((cache) => {
-                                cache.put(event.request, responseToCache);
-                            });
-
-                        return response;
-                    }
-                );
-            })
-    );
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
-    const cacheWhitelist = [CACHE_NAME];
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
+        caches.keys().then(cacheNames => {
             return Promise.all(
-                cacheNames.map((cacheName) => {
-                    if (cacheWhitelist.indexOf(cacheName) === -1) {
+                cacheNames.map(cacheName => {
+                    if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
+                        console.log('Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         })
     );
+    self.clients.claim();
 });
+
+self.addEventListener('fetch', (event) => {
+    const { request } = event;
+    const url = new URL(request.url);
+
+    // Estratégia para recursos estáticos (HTML, CSS, JS)
+    if (staticAssets.includes(url.pathname) || request.destination === 'document') {
+        event.respondWith(cacheFirst(request, STATIC_CACHE));
+        return;
+    }
+
+    // Estratégia para imagens
+    if (request.destination === 'image') {
+        event.respondWith(cacheFirst(request, DYNAMIC_CACHE));
+        return;
+    }
+
+    // Estratégia para recursos externos (CDN)
+    if (url.origin !== location.origin) {
+        event.respondWith(networkFirst(request, DYNAMIC_CACHE));
+        return;
+    }
+
+    // Fallback para outros recursos
+    event.respondWith(networkFirst(request, DYNAMIC_CACHE));
+});
+
+// Cache First Strategy
+async function cacheFirst(request, cacheName) {
+    const cache = await caches.open(cacheName);
+    const cached = await cache.match(request);
+    
+    if (cached) {
+        return cached;
+    }
+    
+    try {
+        const response = await fetch(request);
+        if (response.status === 200) {
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch (error) {
+        console.log('Fetch failed for:', request.url);
+        // Retorna uma resposta offline personalizada se necessário
+        if (request.destination === 'document') {
+            return cache.match('./index.html');
+        }
+        throw error;
+    }
+}
+
+// Network First Strategy
+async function networkFirst(request, cacheName) {
+    const cache = await caches.open(cacheName);
+    
+    try {
+        const response = await fetch(request);
+        if (response.status === 200) {
+            cache.put(request, response.clone());
+        }
+        return response;
+    } catch (error) {
+        console.log('Network failed, trying cache for:', request.url);
+        const cached = await cache.match(request);
+        if (cached) {
+            return cached;
+        }
+        throw error;
+    }
+}

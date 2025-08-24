@@ -53,7 +53,7 @@
             <!-- NOVO: Mensagem pré-preenchida para o WhatsApp do cabeçalho -->
             <a href="https://wa.me/5581993613802?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" rel="noopener" class="whatsapp-header"><i class="fab fa-whatsapp"></i> Delivery (81) 9 9361-3802</a>
         </div>
-        <button id="view-cart-btn" class="cart-button cart-empty" aria-label="Ver carrinho de compras">
+        <button id="view-cart-btn" class="cart-button cart-empty" aria-label="Ver carrinho de compras - 0 itens">
             <i class="fas fa-shopping-cart" aria-hidden="true"></i>
             <span id="cart-item-count" class="cart-count">0</span>
         </button>
@@ -67,6 +67,24 @@
                 <div class="hero-buttons">
                     <button class="btn primary" onclick="document.getElementById('cardapio').scrollIntoView({behavior: 'smooth'}); document.querySelector('.category-btn[data-category=\'tradicionais\']').click();">Ver Cardápio</button>
                 </div>
+            </div>
+        </section>
+
+        <!-- Menu de Categorias - Reposicionado -->
+        <section id="menu-navigation" class="section menu-nav-section">
+            <h3 class="section-title">Nosso Cardápio</h3>
+            <div class="menu-categories">
+                <button class="category-btn" data-category="tradicionais">Pizzas Tradicionais</button>
+                <button class="category-btn" data-category="especiais">Pizzas Especiais</button>
+                <button class="category-btn" data-category="doces">Pizzas Doces</button>
+                <button class="category-btn" data-category="bordas">Bordas Recheadas</button>
+                <button class="category-btn" data-category="bebidas">Bebidas</button>
+            </div>
+            <div id="bebidas-filtros" class="menu-categories hidden">
+                <button class="category-btn" data-vol="1l">1 L</button>
+                <button class="category-btn" data-vol="2l">2 L</button>
+                <button class="category-btn" data-vol="lata">Lata</button>
+                <button class="category-btn" data-vol="agua">Água/Suco</button>
             </div>
         </section>
 
@@ -91,20 +109,6 @@
         </section>
 
         <section id="cardapio" class="section">
-            <h3 class="section-title">Nosso Cardápio</h3>
-            <div class="menu-categories">
-            <button class="category-btn" data-category="tradicionais">Pizzas Tradicionais</button>
-            <button class="category-btn" data-category="especiais">Pizzas Especiais</button>
-            <button class="category-btn" data-category="doces">Pizzas Doces</button>
-            <button class="category-btn" data-category="bordas">Bordas Recheadas</button>
-            <button class="category-btn" data-category="bebidas">Bebidas</button>
-            </div>
-            <div id="bebidas-filtros" class="menu-categories hidden">
-                <button class="category-btn" data-vol="1l">1 L</button>
-                <button class="category-btn" data-vol="2l">2 L</button>
-                <button class="category-btn" data-vol="lata">Lata</button>
-                <button class="category-btn" data-vol="agua">Água/Suco</button>
-            </div>
             <div id="menu-items-container" class="menu-items-container">
                 <!-- Itens do cardápio serão carregados aqui pelo JS -->
             </div>
@@ -120,8 +124,9 @@
             </div>
             <div class="cart-summary">
                 <p>Subtotal: R$ <span id="cart-subtotal">0,00</span></p>
-                <p>Entrega: R$ <span id="delivery-fee">0,00</span></p>
-                <p class="delivery-info">💡 Se escolher entrega em domicílio, será acrescido R$ 3,00</p>
+                <div id="delivery-info-message" class="delivery-info hidden">
+                    💡 Se escolher entrega em domicílio, será acrescida uma taxa de R$ 3,00
+                </div>
                 <h3>Total: R$ <span id="cart-total">0,00</span></h3>
             </div>
             <button id="continue-shopping-btn" class="btn secondary full-width">Continuar Comprando / Voltar ao Cardápio</button>
@@ -187,6 +192,23 @@
                 <div class="input-group">
                     <label for="order-notes">Observações do Pedido (Opcional):</label>
                     <textarea id="order-notes" rows="3" placeholder="Ex: Sem cebola, pizza bem passada, etc."></textarea>
+                </div>
+
+                <!-- Resumo Financeiro -->
+                <div class="checkout-summary">
+                    <h4>Resumo do Pedido</h4>
+                    <div class="summary-line">
+                        <span>Subtotal:</span>
+                        <span>R$ <span id="checkout-subtotal">0,00</span></span>
+                    </div>
+                    <div id="delivery-fee-row" class="summary-line">
+                        <span>Taxa de Entrega:</span>
+                        <span>R$ <span id="checkout-delivery-fee">3,00</span></span>
+                    </div>
+                    <div class="summary-line total-line">
+                        <span><strong>Total:</strong></span>
+                        <span><strong>R$ <span id="checkout-total">0,00</span></strong></span>
+                    </div>
                 </div>
 
                 <button type="submit" class="btn primary full-width mt-2">Confirmar e Enviar Pedido</button>
