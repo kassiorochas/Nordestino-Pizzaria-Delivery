@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: 'Guaraná',
             description: 'Refrigerante Guaraná.',
             category: 'bebidas',
-            image: 'images/guarana-2l.jpeg',
+            image: 'images/refri-guarana-1l.jpeg',
             priceOptions: { '1l': { size: '1L', price: 7.00 }, '2l': { size: '2L', price: 10.00 } },
             defaultSize: '1l'
         },
@@ -177,10 +177,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showToast(message) {
-        const toast = document.getElementById('add-to-cart-toast');
+        // Criar container se não existir
+        let toastContainer = document.querySelector('.toast-container');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.className = 'toast-container';
+            document.body.appendChild(toastContainer);
+        }
+
+        // Criar toast
+        const toast = document.createElement('div');
+        toast.className = 'toast';
         toast.textContent = message;
-        toast.classList.add('active');
-        setTimeout(() => toast.classList.remove('active'), 2000);
+        
+        // Adicionar ao container
+        toastContainer.appendChild(toast);
+        
+        // Ativar animação
+        setTimeout(() => toast.classList.add('active'), 10);
+        
+        // Remover após 3 segundos
+        setTimeout(() => {
+            toast.classList.remove('active');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }, 3000);
     }
 
     function navigateToSection(sectionId) {
@@ -194,11 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function toggleBebidasFiltros(category) {
     const filtros = document.getElementById('bebidas-filtros');
     if (!filtros) return;
-    if (category === 'bebidas') {
-        filtros.classList.remove('hidden');
-    } else {
-        filtros.classList.add('hidden');
-    }
+    // Sempre ocultar os filtros de bebidas
+    filtros.classList.add('hidden');
 }
 
 function renderMenuItems(category = 'tradicionais') {
@@ -321,6 +342,18 @@ function renderMenuItems(category = 'tradicionais') {
         cartSubtotalSpan.textContent = formatCurrency(subtotal);
         cartTotalSpan.textContent = formatCurrency(total);
         cartItemCount.textContent = itemCount;
+
+        // Sempre manter carrinho visível
+        const cartButton = document.getElementById('view-cart-btn');
+        cartButton.classList.remove('cart-empty');
+        // Adicionar animação de pulse no contador quando item é adicionado
+        if (itemCount > 0) {
+            const cartCount = cartButton.querySelector('.cart-count');
+            cartCount.style.animation = 'none';
+            setTimeout(() => {
+                cartCount.style.animation = 'pulse 0.5s ease-in-out';
+            }, 10);
+        }
 
         const cartCtaMessage = document.getElementById('cart-cta-message');
 
