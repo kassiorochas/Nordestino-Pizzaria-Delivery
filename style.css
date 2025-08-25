@@ -687,19 +687,46 @@ footer .developed-by {
     position: relative;
     max-width: 380px;
     width: 100%;
+    max-height: 90vh; /* Aumenta um pouco a altura máxima */
+    overflow-y: auto; /* Permite scroll interno se necessário */
     text-align: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     transform: scale(1);
+    margin: auto; /* Centraliza melhor */
     animation: modalSlideIn 0.3s ease-out;
     border: 2px solid var(--primary-red);
+}
+
+/* Melhorias específicas para dispositivos móveis */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 95%;
+        max-height: 90vh;
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .modal-content img {
+        max-height: 120px; /* Imagem menor em mobile */
+    }
+    
+    .modal-content h4 {
+        font-size: 1.2rem;
+    }
+    
+    .modal-content p {
+        font-size: 0.85rem;
+    }
 }
 .modal-content .close-button {
     color: var(--text-dark);
     font-size: 24px;
     font-weight: bold;
-    position: absolute;
-    top: 12px;
-    right: 16px;
+    position: sticky; /* Mudança para sticky para sempre ficar visível */
+    top: 0;
+    right: 0;
+    margin-left: auto;
+    margin-bottom: 10px;
     cursor: pointer;
     width: 32px;
     height: 32px;
@@ -709,6 +736,7 @@ footer .developed-by {
     justify-content: center;
     background-color: rgba(201, 0, 0, 0.1);
     transition: all 0.2s ease;
+    z-index: 10; /* Garante que fique acima do conteúdo */
 }
 .modal-content .close-button:hover,
 .modal-content .close-button:focus {
@@ -718,7 +746,7 @@ footer .developed-by {
 }
 .modal-content img {
     width: 100%;
-    max-height: 180px;
+    max-height: 150px; /* Reduzindo altura da imagem */
     object-fit: cover;
     border-radius: 12px;
     margin-bottom: 15px;
@@ -726,13 +754,13 @@ footer .developed-by {
 }
 .modal-content h4 {
     font-family: var(--font-heading);
-    font-size: 1.6rem;
+    font-size: 1.4rem; /* Reduzindo tamanho da fonte */
     color: var(--primary-red);
     margin-bottom: 8px;
     text-transform: uppercase;
 }
 .modal-content p {
-    font-size: 0.95rem;
+    font-size: 0.9rem; /* Reduzindo tamanho da fonte */
     color: var(--text-dark);
     margin-bottom: 15px;
 }
@@ -952,8 +980,26 @@ footer .developed-by {
     .cart-summary h3 {
         font-size: 1.8rem;
     }
+    
+    /* Modal responsivo para mobile */
+    .modal {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    .modal-content {
+        max-width: 95%;
+        max-height: 90vh;
+        padding: 20px;
+    }
+    .modal-content img {
+        max-height: 120px;
+    }
     .modal-content h4 {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
+    }
+    .modal-content p {
+        font-size: 0.85rem;
     }
     .modal-quantity-control button {
         width: 30px;
@@ -964,8 +1010,9 @@ footer .developed-by {
         font-size: 1.2rem;
     }
     .modal-item-price {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
     }
+    
     .floating-buttons {
         bottom: 15px;
         right: 15px;
@@ -1527,3 +1574,77 @@ body.has-alert {
     }
 }
 
+/* === Overrides: Barra de Categorias compacta e elegante === */
+.menu-nav-section {
+  background: var(--primary-red);
+  color: var(--text-light);
+  padding: 8px 12px;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 64px; /* mantém abaixo do header sticky */
+  z-index: 900;
+}
+@media (max-width: 768px) {
+  .menu-nav-section { top: 56px; }
+}
+
+.menu-nav-section .section-title {
+  color: #fff;
+  font-size: 1.25rem;
+  margin: 0 0 8px;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.menu-nav-section .menu-categories {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 2px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.4) transparent;
+  justify-content: center;
+}
+@media (max-width: 900px) {
+  .menu-nav-section .menu-categories { justify-content: flex-start; }
+}
+.menu-nav-section .menu-categories::-webkit-scrollbar {
+  height: 6px;
+}
+.menu-nav-section .menu-categories::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.35);
+  border-radius: 999px;
+}
+
+.menu-nav-section .category-btn {
+  background: #fff;
+  color: #7a0a0a;
+  border: 2px solid transparent;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: .95rem;
+  white-space: nowrap;
+  transition: transform .15s ease, box-shadow .15s ease, color .15s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+.menu-nav-section .category-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,.16);
+}
+.menu-nav-section .category-btn.active {
+  background: var(--secondary-yellow);
+  color: #111;
+  box-shadow: 0 4px 12px rgba(0,0,0,.18);
+}
+/* Sub-filtros de bebidas alinhados ao mesmo padrão */
+#bebidas-filtros.menu-categories {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* UX: Logo clicável como Home */
+header .logo-container { cursor: pointer; }

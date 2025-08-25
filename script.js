@@ -2,6 +2,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const PIZZARIA_WHATSAPP = '5581993613802'; // WhatsApp da Pizzaria
     const ENTREGA_PADRAO = 3.00; // Taxa de entrega padrão
 
+    
+    // =========================
+    // NAVEGAÇÃO ENTRE SEÇÕES
+    // =========================
+    function navigateToSection(targetId) {
+        const sections = ['hero','menu-navigation','promocoes','cardapio','cart','checkout','order-confirmation'];
+        sections.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+
+        const show = (ids) => ids.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('hidden');
+        });
+
+        if (targetId === 'hero') {
+            show(['hero','menu-navigation','promocoes','cardapio']);
+        } else if (targetId === 'cardapio') {
+            show(['menu-navigation','cardapio']);
+        } else if (sections.includes(targetId)) {
+            show([targetId]);
+        }
+
+        // Sempre levar ao topo para evitar que o usuário fique perdido
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     // =========================
     // DADOS DO CARDÁPIO
     // =========================
@@ -128,6 +155,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentComboAdding = null;
 
     const logoContainer = document.querySelector('header .logo-container');
+
+    // Tornar o logo "clicável" como HOME, inclusive via teclado
+    if (logoContainer) {
+        logoContainer.setAttribute('role', 'button');
+        logoContainer.setAttribute('aria-label', 'Ir para o início');
+        logoContainer.style.cursor = 'pointer';
+        logoContainer.tabIndex = 0;
+        logoContainer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                navigateToSection('hero');
+                document.getElementById('promocoes')?.classList.remove('hidden');
+                document.getElementById('cardapio')?.classList.remove('hidden');
+            }
+        });
+    }
     const viewCartBtn = document.getElementById('view-cart-btn');
     const cartItemCount = document.getElementById('cart-item-count');
     const menuItemsContainer = document.getElementById('menu-items-container');
@@ -207,11 +250,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 
-    function navigateToSection(sectionId) {
-        document.querySelectorAll('.section').forEach(section => section.classList.add('hidden'));
-        document.getElementById(sectionId).classList.remove('hidden');
+    function showMainContent() {
+        // Mostra todas as seções principais, exceto o carrinho e a confirmação
+        document.getElementById('hero').style.display = 'block';
+        document.getElementById('promocoes').style.display = 'block';
+        document.getElementById('cardapio').style.display = 'block';
+        document.getElementById('menu-navigation').style.display = 'block'; // Garante que o menu de navegação seja exibido
+        document.getElementById('cart').classList.add('hidden');
+        document.getElementById('checkout').classList.add('hidden');
+        document.getElementById('order-confirmation').classList.add('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Adiciona o listener de evento para o botão 'Continuar Comprando'
+    continueShoppingBtn.addEventListener('click', showMainContent);
 
     
 // Mostrar/ocultar filtros de bebidas conforme categoria ativa
@@ -720,11 +772,22 @@ function renderMenuItems(category = 'tradicionais') {
     // =========================
     document.querySelectorAll('.category-btn').forEach(btn => {
         btn.addEventListener('click', () => {
+            // Só processa se o botão tem data-category (ignora filtros de bebidas)
+            if (!btn.dataset.category) return;
+            
             document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
             const cat = btn.dataset.category;
             renderMenuItems(cat);
             if (typeof toggleBebidasFiltros === 'function') toggleBebidasFiltros(cat);
+            
+            // Fazer scroll automático para a seção do cardápio com delay para garantir renderização
+            setTimeout(() => {
+                const cardapioSection = document.getElementById('cardapio');
+                if (cardapioSection) {
+                    cardapioSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
         });
     });
 
