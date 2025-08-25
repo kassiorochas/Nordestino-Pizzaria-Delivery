@@ -1648,3 +1648,8 @@ body.has-alert {
 
 /* UX: Logo clicável como Home */
 header .logo-container { cursor: pointer; }
+
+
+/* === Compact menu state (fininho ao grudar/ao clicar) === */
+.menu-nav-section.compact { padding: 6px 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
+.menu-nav-section.compact .category-btn { padding: 7px 12px; font-size: .9rem; }

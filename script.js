@@ -1,4 +1,33 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+// ==== Compact menu + offset scroll helpers (safe inject) ====
+function _np_getFixedHeadersHeight(){
+    const header = document.querySelector('header');
+    const menu = document.getElementById('menu-navigation');
+    let h = 0;
+    if (header) h += header.getBoundingClientRect().height;
+    if (menu)  h += menu.getBoundingClientRect().height;
+    return h + 8; // breathe a bit
+}
+function _np_scrollToCardapioWithOffset(){
+    const section = document.getElementById('cardapio');
+    if (!section) return;
+    const y = section.getBoundingClientRect().top + window.scrollY - _np_getFixedHeadersHeight();
+    window.scrollTo({ top: y, behavior: 'smooth' });
+}
+function _np_updateMenuCompact(){
+    const menu = document.getElementById('menu-navigation');
+    if (!menu) return;
+    // Fica compacto quando a página está rolada o suficiente para o menu "grudar"
+    const hero = document.getElementById('hero');
+    const headerH = document.querySelector('header')?.getBoundingClientRect().height || 0;
+    const trigger = hero ? (hero.getBoundingClientRect().bottom <= headerH + 10) : (window.scrollY > 20);
+    if (trigger) menu.classList.add('compact');
+    else menu.classList.remove('compact');
+}
+window.addEventListener('scroll', _np_updateMenuCompact, { passive: true });
+document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
+
     const PIZZARIA_WHATSAPP = '5581993613802'; // WhatsApp da Pizzaria
     const ENTREGA_PADRAO = 3.00; // Taxa de entrega padrão
 
@@ -783,11 +812,9 @@ function renderMenuItems(category = 'tradicionais') {
             
             // Fazer scroll automático para a seção do cardápio com delay para garantir renderização
             setTimeout(() => {
-                const cardapioSection = document.getElementById('cardapio');
-                if (cardapioSection) {
-                    cardapioSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }, 100);
+                document.getElementById('menu-navigation')?.classList.add('compact');
+                _np_scrollToCardapioWithOffset();
+            }, 80);
         });
     });
 
@@ -797,6 +824,7 @@ function renderMenuItems(category = 'tradicionais') {
     });
 
     continueShoppingBtn.addEventListener('click', () => {
+        document.getElementById('menu-navigation')?.classList.add('compact');
         navigateToSection('cardapio');
         document.getElementById('hero').classList.remove('hidden');
         document.getElementById('promocoes').classList.remove('hidden');
@@ -807,6 +835,7 @@ function renderMenuItems(category = 'tradicionais') {
     });
 
     logoContainer.addEventListener('click', () => {
+        document.getElementById('menu-navigation')?.classList.remove('compact');
         navigateToSection('hero');
         document.getElementById('promocoes').classList.remove('hidden');
         document.getElementById('cardapio').classList.remove('hidden');
