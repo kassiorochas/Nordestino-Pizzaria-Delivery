@@ -1574,82 +1574,85 @@ body.has-alert {
     }
 }
 
-/* === Overrides: Barra de Categorias compacta e elegante === */
+
+/* === Menu de Categorias • Refinado e Responsivo (visual apenas) - 25/08/2025 === */
 .menu-nav-section {
+  padding: 8px 0;                      /* barra mais fina */
   background: var(--primary-red);
-  color: var(--text-light);
-  padding: 8px 12px;
-  margin: 0;
-  border-radius: 0;
-  box-shadow: var(--box-shadow);
   position: sticky;
-  top: 64px; /* mantém abaixo do header sticky */
+  top: 64px;
   z-index: 900;
+  box-shadow: 0 2px 8px rgba(0,0,0,.12);
 }
-@media (max-width: 768px) {
-  .menu-nav-section { top: 56px; }
-}
+@media (max-width: 768px){ .menu-nav-section { top: 56px; } }
 
+/* Título opcional mais discreto */
 .menu-nav-section .section-title {
+  margin: 0 0 6px;
+  font-size: 1rem;
   color: #fff;
-  font-size: 1.25rem;
-  margin: 0 0 8px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
+  opacity: .9;
 }
 
-.menu-nav-section .menu-categories {
+/* Faixa de categorias: organizada, com respiro nas bordas e rolagem suave no mobile */
+.menu-nav-section .menu-categories{
   display: flex;
-  gap: 10px;
-  overflow-x: auto;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 12px;                   /* respiro à esquerda/direita no mobile */
+  max-width: 1200px;
+  margin: 0 auto;
+  overflow-x: auto;                    /* apenas mobile/estreito */
   -webkit-overflow-scrolling: touch;
-  padding: 4px 2px 8px;
+  scroll-snap-type: x proximity;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,.4) transparent;
-  justify-content: center;
+  scrollbar-color: rgba(255,255,255,.35) transparent;
 }
-@media (max-width: 900px) {
-  .menu-nav-section .menu-categories { justify-content: flex-start; }
-}
-.menu-nav-section .menu-categories::-webkit-scrollbar {
-  height: 6px;
-}
-.menu-nav-section .menu-categories::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,.35);
-  border-radius: 999px;
+.menu-nav-section .menu-categories::-webkit-scrollbar{ height: 6px; }
+.menu-nav-section .menu-categories::-webkit-scrollbar-thumb{ background: rgba(255,255,255,.35); border-radius: 999px; }
+
+/* No desktop, centraliza e remove overflow visual */
+@media (min-width: 992px){
+  .menu-nav-section .menu-categories{
+    overflow: visible;
+    justify-content: center;
+  }
 }
 
-.menu-nav-section .category-btn {
+/* Botões pílula mais compactos, coerentes em todas as telas */
+.menu-nav-section .category-btn{
+  flex: 0 0 auto;
+  scroll-snap-align: start;
   background: #fff;
   color: #7a0a0a;
   border: 2px solid transparent;
   border-radius: 999px;
-  padding: 10px 16px;
+  padding: 8px 14px;                   /* menor que antes */
   font-weight: 700;
-  font-size: .95rem;
+  font-size: .93rem;
+  line-height: 1;
   white-space: nowrap;
-  transition: transform .15s ease, box-shadow .15s ease, color .15s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,.12);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, color .15s ease;
 }
-.menu-nav-section .category-btn:hover {
+.menu-nav-section .category-btn:hover{
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,.16);
+  box-shadow: 0 4px 12px rgba(0,0,0,.16);
 }
-.menu-nav-section .category-btn.active {
+.menu-nav-section .category-btn.active{
   background: var(--secondary-yellow);
   color: #111;
   box-shadow: 0 4px 12px rgba(0,0,0,.18);
 }
-/* Sub-filtros de bebidas alinhados ao mesmo padrão */
-#bebidas-filtros.menu-categories {
-  margin-top: 0;
-  padding-top: 0;
+
+/* Mais compacto ainda em telas muito pequenas */
+@media (max-width: 420px){
+  .menu-nav-section .category-btn{ padding: 7px 12px; font-size: .9rem; }
 }
 
-/* UX: Logo clicável como Home */
-header .logo-container { cursor: pointer; }
+/* Sub-filtros de bebidas seguem o mesmo padrão visual */
+#bebidas-filtros.menu-categories{
+  padding-top: 2px;
+  margin-top: 0;
+}
 
-
-/* === Compact menu state (fininho ao grudar/ao clicar) === */
-.menu-nav-section.compact { padding: 6px 10px; box-shadow: 0 2px 10px rgba(0,0,0,.15); }
-.menu-nav-section.compact .category-btn { padding: 7px 12px; font-size: .9rem; }
