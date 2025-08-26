@@ -965,13 +965,25 @@ function renderMenuItems(category = 'tradicionais') {
             message += `- ${item.quantity}x ${item.name} ${item.selectedSize ? '(' + item.selectedSize.size + ')' : ''} ${item.options || ''} = R$ ${formatCurrency(item.price * item.quantity)}\n`;
         });
 
-        message += `\n*Resumo Financeiro:*\n`;
-        message += `Subtotal: R$ ${cartSubtotalSpan.textContent}\n`;
-        if (deliveryOption === 'delivery') {
-            const deliveryFeeText = document.getElementById('delivery-fee')?.textContent || '0,00';
-            message += `Taxa de Entrega: R$ ${deliveryFeeText}\n`;
-        }
-        message += `*Total: R$ ${cartTotalSpan.textContent}*\n\n`;
+        const ckSubtotalEl = document.getElementById('checkout-subtotal');
+const ckDeliveryEl = document.getElementById('checkout-delivery-fee');
+const ckTotalEl    = document.getElementById('checkout-total');
+const ckSubtotal = ckSubtotalEl ? ckSubtotalEl.textContent : cartSubtotalSpan.textContent;
+const ckDelivery = ckDeliveryEl ? ckDeliveryEl.textContent : '0,00';
+const ckTotal    = ckTotalEl ? ckTotalEl.textContent    : cartTotalSpan.textContent;
+const ckDeliveryNum = parseFloat(ckDelivery.replace(/\./g,'').replace(',', '.')) || 0;
+message += `
+*Resumo Financeiro:*
+`;
+message += `Subtotal: R$ ${ckSubtotal}
+`;
+if (deliveryOption === 'delivery' && ckDeliveryNum > 0) {
+  message += `Taxa de Entrega: R$ ${ckDelivery}
+`;
+}
+message += `*Total: R$ ${ckTotal}*
+
+`;
 
         message += `*Detalhes da Entrega:*\n`;
         message += `${deliveryOption === 'delivery' ? 'Entrega em domicílio' : 'Retirada no local'}${addressDetails}\n`;
