@@ -644,10 +644,26 @@ function renderMenuItems(category = 'tradicionais') {
         }
 
         
+        // Cálculo de preço para pizzas comuns (meio a meio usando o tamanho selecionado)
+        let computedPrice = 0;
+        (function() {
+            const meioAMeio = (typeof flavorOptions === 'string') && flavorOptions.trim().startsWith('(Meio a meio:');
+            if (meioAMeio) {
+                const parts = flavorOptions.replace('(Meio a meio:', '').replace(')', '').split('+').map(s => s.trim());
+                const itemA = menuItems.find(it => it.name === parts[0]);
+                const itemB = menuItems.find(it => it.name === parts[1]);
+                const pa = itemA?.priceOptions?.[selectedSizeKey]?.price ?? 0;
+                const pb = itemB?.priceOptions?.[selectedSizeKey]?.price ?? 0;
+                computedPrice = (pa / 2) + (pb / 2);
+            } else {
+                computedPrice = currentModalItem.priceOptions[selectedSizeKey].price;
+            }
+        })();
+    
         const itemToAdd = {
             id: currentModalItem.id + (selectedSizeKey ? '-' + selectedSizeKey : '') + (flavorOptions ? '-' + flavorOptions.replace(/\s/g, '_').replace(/[()]/g, '') : '') + (itemNotes ? '-' + itemNotes.replace(/\s/g, '_') : ''),
             name: currentModalItem.name,
-            price: currentModalItem.priceOptions[selectedSizeKey].price,
+            price: computedPrice,
             quantity: currentModalQuantity,
             selectedSize: currentModalItem.priceOptions[selectedSizeKey],
             options: (flavorOptions + (itemNotes ? ` (Obs: ${itemNotes})` : '')).trim(),
@@ -673,7 +689,6 @@ function renderMenuItems(category = 'tradicionais') {
         button.addEventListener('click', (e) => {
             const comboId = e.target.dataset.itemId;
             currentComboAdding = comboItems.find(c => c.id === comboId);
-            const eligible = (currentComboAdding && currentComboAdding.id === 'combo-dupla') ? tradicionaisPizzas : (typeof comboEligiblePizzas !== 'undefined' ? comboEligiblePizzas : [...tradicionaisPizzas, ...especiaisPizzas]);
             if (!currentComboAdding) {
                 console.error('Combo não encontrado:', comboId);
                 return;
@@ -690,12 +705,12 @@ function renderMenuItems(category = 'tradicionais') {
                     <label for="combo-flavor1-${i}">Sabor 1:</label>
                     <select id="combo-flavor1-${i}" class="pizza-flavor-select" required>
                         <option value="">Selecione o sabor</option>
-                        ${eligible.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                     <label for="combo-flavor2-${i}">Sabor 2 (Opcional - Meio a meio):</label>
                     <select id="combo-flavor2-${i}" class="pizza-flavor-select-optional">
                         <option value="">Nenhum</option>
-                        ${eligible.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                 `;
                 flavorSelectionContainer.appendChild(flavorGroup);
