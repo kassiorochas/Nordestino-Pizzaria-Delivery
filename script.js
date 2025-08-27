@@ -673,6 +673,7 @@ function renderMenuItems(category = 'tradicionais') {
         button.addEventListener('click', (e) => {
             const comboId = e.target.dataset.itemId;
             currentComboAdding = comboItems.find(c => c.id === comboId);
+            const eligible = (currentComboAdding && currentComboAdding.id === 'combo-dupla') ? tradicionaisPizzas : (typeof comboEligiblePizzas !== 'undefined' ? comboEligiblePizzas : [...tradicionaisPizzas, ...especiaisPizzas]);
             if (!currentComboAdding) {
                 console.error('Combo não encontrado:', comboId);
                 return;
@@ -689,12 +690,12 @@ function renderMenuItems(category = 'tradicionais') {
                     <label for="combo-flavor1-${i}">Sabor 1:</label>
                     <select id="combo-flavor1-${i}" class="pizza-flavor-select" required>
                         <option value="">Selecione o sabor</option>
-                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${eligible.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                     <label for="combo-flavor2-${i}">Sabor 2 (Opcional - Meio a meio):</label>
                     <select id="combo-flavor2-${i}" class="pizza-flavor-select-optional">
                         <option value="">Nenhum</option>
-                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${eligible.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                 `;
                 flavorSelectionContainer.appendChild(flavorGroup);
