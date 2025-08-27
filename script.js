@@ -158,7 +158,7 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
         {
             id: 'combo-pizza-refri',
             name: 'Combo Pizza + Refri 1L',
-            description: '1 Pizza Média Tradicional + 1 Refrigerante Guaraná 1L.',
+            description: '1 Pizza Grande + 1 Refrigerante Guaraná 1L.',
             price: 36.00,
             image: 'images/combo-pizza-refri.jpeg',
             pizzasIncluded: 1,
@@ -240,6 +240,8 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
     const addComboToCartBtn = document.getElementById('add-combo-to-cart-btn');
 
     const tradicionaisPizzas = menuItems.filter(item => item.category === 'tradicionais');
+    const especiaisPizzas = menuItems.filter(item => item.category === 'especiais');
+    const comboEligiblePizzas = [...tradicionaisPizzas, ...especiaisPizzas];
 
     // =========================
     // UTILS
@@ -641,6 +643,7 @@ function renderMenuItems(category = 'tradicionais') {
             }
         }
 
+        
         const itemToAdd = {
             id: currentModalItem.id + (selectedSizeKey ? '-' + selectedSizeKey : '') + (flavorOptions ? '-' + flavorOptions.replace(/\s/g, '_').replace(/[()]/g, '') : '') + (itemNotes ? '-' + itemNotes.replace(/\s/g, '_') : ''),
             name: currentModalItem.name,
@@ -686,12 +689,12 @@ function renderMenuItems(category = 'tradicionais') {
                     <label for="combo-flavor1-${i}">Sabor 1:</label>
                     <select id="combo-flavor1-${i}" class="pizza-flavor-select" required>
                         <option value="">Selecione o sabor</option>
-                        ${tradicionaisPizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                     <label for="combo-flavor2-${i}">Sabor 2 (Opcional - Meio a meio):</label>
                     <select id="combo-flavor2-${i}" class="pizza-flavor-select-optional">
                         <option value="">Nenhum</option>
-                        ${tradicionaisPizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                 `;
                 flavorSelectionContainer.appendChild(flavorGroup);
@@ -728,11 +731,31 @@ function renderMenuItems(category = 'tradicionais') {
         });
 
         const comboOptions = `(Sabores: ${selectedFlavors.join(', ')})`;
+        // Cálculo de preço do Combo baseado nos sabores selecionados (Grande) e regra de meio a meio
+        function getMenuItemByName(nm) {
+            return menuItems.find(it => it.name === nm);
+        }
+        let computedPrice = 0;
+        selectedFlavors.forEach(sf => {
+            if (sf.startsWith('Meio a meio:')) {
+                const parts = sf.replace('Meio a meio:', '').split('+').map(s => s.trim());
+                const a = getMenuItemByName(parts[0]);
+                const b = getMenuItemByName(parts[1]);
+                const pa = a && a.priceOptions?.grande?.price ? a.priceOptions.grande.price : 0;
+                const pb = b && b.priceOptions?.grande?.price ? b.priceOptions.grande.price : 0;
+                computedPrice += (pa / 2) + (pb / 2);
+            } else {
+                const it = getMenuItemByName(sf);
+                const p = it && it.priceOptions?.grande?.price ? it.priceOptions.grande.price : currentComboAdding.price;
+                computedPrice += p;
+            }
+        });
+
 
         const itemToAdd = {
             id: currentComboAdding.id + '-' + selectedFlavors.map(f => f.replace(/\s/g, '_').replace(/[():]/g, '')).join('-'),
             name: currentComboAdding.name,
-            price: currentComboAdding.price,
+            price: computedPrice,
             quantity: 1,
             selectedSize: null,
             options: comboOptions,
@@ -965,25 +988,13 @@ function renderMenuItems(category = 'tradicionais') {
             message += `- ${item.quantity}x ${item.name} ${item.selectedSize ? '(' + item.selectedSize.size + ')' : ''} ${item.options || ''} = R$ ${formatCurrency(item.price * item.quantity)}\n`;
         });
 
-        const ckSubtotalEl = document.getElementById('checkout-subtotal');
-const ckDeliveryEl = document.getElementById('checkout-delivery-fee');
-const ckTotalEl    = document.getElementById('checkout-total');
-const ckSubtotal = ckSubtotalEl ? ckSubtotalEl.textContent : cartSubtotalSpan.textContent;
-const ckDelivery = ckDeliveryEl ? ckDeliveryEl.textContent : '0,00';
-const ckTotal    = ckTotalEl ? ckTotalEl.textContent    : cartTotalSpan.textContent;
-const ckDeliveryNum = parseFloat(ckDelivery.replace(/\./g,'').replace(',', '.')) || 0;
-message += `
-*Resumo Financeiro:*
-`;
-message += `Subtotal: R$ ${ckSubtotal}
-`;
-if (deliveryOption === 'delivery' && ckDeliveryNum > 0) {
-  message += `Taxa de Entrega: R$ ${ckDelivery}
-`;
-}
-message += `*Total: R$ ${ckTotal}*
-
-`;
+        message += `\n*Resumo Financeiro:*\n`;
+        message += `Subtotal: R$ ${cartSubtotalSpan.textContent}\n`;
+        if (deliveryOption === 'delivery') {
+            const deliveryFeeText = document.getElementById('delivery-fee')?.textContent || '0,00';
+            message += `Taxa de Entrega: R$ ${deliveryFeeText}\n`;
+        }
+        message += `*Total: R$ ${cartTotalSpan.textContent}*\n\n`;
 
         message += `*Detalhes da Entrega:*\n`;
         message += `${deliveryOption === 'delivery' ? 'Entrega em domicílio' : 'Retirada no local'}${addressDetails}\n`;
