@@ -245,6 +245,32 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
 
     // =========================
     // UTILS
+    // === Helpers (meio a meio por MÉDIA) ===
+    function _np_findItemByName(name) {
+        try { return menuItems.find(i => i.name === name); } catch(e){ return null; }
+    }
+    function _np_priceBy(sizeKey, item) {
+        try { return item && item.priceOptions && item.priceOptions[sizeKey] ? item.priceOptions[sizeKey].price : 0; } catch(e){ return 0; }
+    }
+    function _np_computeHalfHalfAverage(sizeKey, flavor1Name, flavor2Name, fallbackItem) {
+        const itemA = _np_findItemByName(flavor1Name) || fallbackItem;
+        const pA = _np_priceBy(sizeKey, itemA);
+        if (!flavor2Name) return pA || _np_priceBy(sizeKey, fallbackItem);
+        const itemB = _np_findItemByName(flavor2Name);
+        const pB = _np_priceBy(sizeKey, itemB);
+        // Regra: MÉDIA aritmética dos dois sabores
+        return (pA + pB) / 2;
+    }
+    function _np_updateCardPriceDisplay(itemId, newPrice) {
+        try {
+            const card = document.querySelector('.menu-item-card[data-item-id="' + itemId + '"]');
+            if (!card) return;
+            const priceEl = card.querySelector('.item-price');
+            if (!priceEl) return;
+            priceEl.textContent = 'R$ ' + formatCurrency(newPrice);
+        } catch(e) {}
+    }
+
     // =========================
     function formatCurrency(value) {
         return value.toFixed(2).replace('.', ',');
@@ -538,6 +564,39 @@ function renderMenuItems(category = 'tradicionais') {
                 </select>
             `;
             modalItemOptions.appendChild(flavorSelectionDiv);
+            try {
+                const __f1 = document.getElementById('flavor1-select');
+                const __f2 = document.getElementById('flavor2-select');
+                const __size = () => (document.getElementById('modal-item-size-select') ? document.getElementById('modal-item-size-select').value : (Object.keys(currentModalItem.priceOptions)[0]));
+                const __refresh = () => {
+                    const f1 = __f1 ? (__f1.value || currentModalItem.name) : currentModalItem.name;
+                    const f2 = __f2 ? (__f2.value || '') : '';
+                    const unit = f2 ? _np_computeHalfHalfAverage(__size(), f1, f2, currentModalItem) : _np_priceBy(__size(), currentModalItem);
+                    try { modalPriceValue.textContent = formatCurrency(unit * currentModalQuantity); } catch(e){}
+                };
+                __f1 && __f1.addEventListener('change', __refresh);
+                __f2 && __f2.addEventListener('change', __refresh);
+            } catch(e){}
+            // Recalcula preço (MÉDIA) ao mudar sabores/tamanho - não substitui handlers existentes
+            function _np_refreshModalPriceAverage() {
+                try {
+                    const sizeSel = document.getElementById('modal-item-size-select');
+                    const sizeKey = sizeSel ? sizeSel.value : (Object.keys(currentModalItem.priceOptions)[0]);
+                    const f1El = document.getElementById('flavor1-select');
+                    const f2El = document.getElementById('flavor2-select');
+                    const flavor1 = f1El && f1El.value ? f1El.value : currentModalItem.name;
+                    const flavor2 = f2El && f2El.value ? f2El.value : '';
+                    const unit = _np_computeHalfHalfAverage(sizeKey, flavor1, flavor2, currentModalItem);
+                    // Apenas atualiza a exibição; não altera a lógica de carrinho existente
+                    try { modalPriceValue.textContent = formatCurrency(unit * currentModalQuantity); } catch(e){}
+                    _np_updateCardPriceDisplay(currentModalItem.id, unit);
+                } catch(e){}
+            }
+            try {
+                document.getElementById('flavor1-select')?.addEventListener('change', _np_refreshModalPriceAverage);
+                document.getElementById('flavor2-select')?.addEventListener('change', _np_refreshModalPriceAverage);
+            } catch(e){}
+
 
             const flavor1Select = document.getElementById("flavor1-select");
             const flavor2Select = document.getElementById("flavor2-select");
@@ -592,12 +651,22 @@ function renderMenuItems(category = 'tradicionais') {
             select.value = defaultKey;
 
             select.addEventListener('change', (e) => {
-                const selectedPrice = currentModalItem.priceOptions[e.target.value].price;
-                modalPriceValue.textContent = formatCurrency(selectedPrice * currentModalQuantity);
+                const f1El = document.getElementById('flavor1-select');
+                const f2El = document.getElementById('flavor2-select');
+                const flavor1 = f1El ? (f1El.value || currentModalItem.name) : currentModalItem.name;
+                const flavor2 = f2El ? (f2El.value || '') : '';
+                const unit = flavor2 ? _np_computeHalfHalfAverage(e.target.value, flavor1, flavor2, currentModalItem) : currentModalItem.priceOptions[e.target.value].price;
+                modalPriceValue.textContent = formatCurrency(unit * currentModalQuantity);
             });
 
             modalItemOptions.appendChild(selectLabel);
             modalItemOptions.appendChild(select);
+            try {
+                select.addEventListener('change', function(){
+                    if (typeof _np_refreshModalPriceAverage === 'function') _np_refreshModalPriceAverage();
+                });
+            } catch(e){}
+
         } else {
             const singleOption = document.createElement('p');
             singleOption.textContent = `Tamanho: ${currentModalItem.priceOptions[priceKeys[0]].size}`;
@@ -606,6 +675,8 @@ function renderMenuItems(category = 'tradicionais') {
 
         currentModalQuantity = 1;
         currentQuantityModalSpan.textContent = currentModalQuantity;
+        try { if (typeof _np_refreshModalPriceAverage === 'function') _np_refreshModalPriceAverage(); } catch(e){}
+
 
         const initialSizeKey = (preselectSizeKey && Object.keys(currentModalItem.priceOptions).includes(preselectSizeKey)) ? preselectSizeKey : (Object.keys(currentModalItem.priceOptions).includes('grande') ? 'grande' : currentModalItem.defaultSize);
         modalPriceValue.textContent = formatCurrency(currentModalItem.priceOptions[initialSizeKey]?.price || Object.values(currentModalItem.priceOptions)[0].price);
@@ -644,26 +715,19 @@ function renderMenuItems(category = 'tradicionais') {
         }
 
         
-        // Cálculo de preço para pizzas comuns (meio a meio usando o tamanho selecionado)
-        let computedPrice = 0;
-        (function() {
-            const meioAMeio = (typeof flavorOptions === 'string') && flavorOptions.trim().startsWith('(Meio a meio:');
-            if (meioAMeio) {
-                const parts = flavorOptions.replace('(Meio a meio:', '').replace(')', '').split('+').map(s => s.trim());
-                const itemA = menuItems.find(it => it.name === parts[0]);
-                const itemB = menuItems.find(it => it.name === parts[1]);
-                const pa = itemA?.priceOptions?.[selectedSizeKey]?.price ?? 0;
-                const pb = itemB?.priceOptions?.[selectedSizeKey]?.price ?? 0;
-                computedPrice = (pa / 2) + (pb / 2);
-            } else {
-                computedPrice = currentModalItem.priceOptions[selectedSizeKey].price;
-            }
-        })();
-    
         const itemToAdd = {
             id: currentModalItem.id + (selectedSizeKey ? '-' + selectedSizeKey : '') + (flavorOptions ? '-' + flavorOptions.replace(/\s/g, '_').replace(/[()]/g, '') : '') + (itemNotes ? '-' + itemNotes.replace(/\s/g, '_') : ''),
             name: currentModalItem.name,
-            price: computedPrice,
+            price: (function(){
+                const f1El = document.getElementById('flavor1-select');
+                const f2El = document.getElementById('flavor2-select');
+                const flavor1 = f1El ? (f1El.value || currentModalItem.name) : currentModalItem.name;
+                const flavor2 = f2El ? (f2El.value || '') : '';
+                if (flavor2) {
+                    return _np_computeHalfHalfAverage(selectedSizeKey, flavor1, flavor2, currentModalItem);
+                }
+                return currentModalItem.priceOptions[selectedSizeKey].price;
+            })(),
             quantity: currentModalQuantity,
             selectedSize: currentModalItem.priceOptions[selectedSizeKey],
             options: (flavorOptions + (itemNotes ? ` (Obs: ${itemNotes})` : '')).trim(),
@@ -689,6 +753,7 @@ function renderMenuItems(category = 'tradicionais') {
         button.addEventListener('click', (e) => {
             const comboId = e.target.dataset.itemId;
             currentComboAdding = comboItems.find(c => c.id === comboId);
+            const eligible = (currentComboAdding && currentComboAdding.id === 'combo-dupla') ? tradicionaisPizzas : (typeof comboEligiblePizzas !== 'undefined' ? comboEligiblePizzas : [...tradicionaisPizzas, ...especiaisPizzas]);
             if (!currentComboAdding) {
                 console.error('Combo não encontrado:', comboId);
                 return;
@@ -705,12 +770,12 @@ function renderMenuItems(category = 'tradicionais') {
                     <label for="combo-flavor1-${i}">Sabor 1:</label>
                     <select id="combo-flavor1-${i}" class="pizza-flavor-select" required>
                         <option value="">Selecione o sabor</option>
-                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${eligible.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                     <label for="combo-flavor2-${i}">Sabor 2 (Opcional - Meio a meio):</label>
                     <select id="combo-flavor2-${i}" class="pizza-flavor-select-optional">
                         <option value="">Nenhum</option>
-                        ${comboEligiblePizzas.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
+                        ${eligible.map(pizza => `<option value="${pizza.name}">${pizza.name}</option>`).join('')}
                     </select>
                 `;
                 flavorSelectionContainer.appendChild(flavorGroup);
