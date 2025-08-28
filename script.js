@@ -180,19 +180,6 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
     // ESTADO & ELEMENTOS
     // =========================
     let cart = [];
-/* === [PATCH] Persistência do carrinho (localStorage) === */
-const CART_STORAGE_KEY = 'np_cart_v1';
-function saveCart(){
-  try{ localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart)); }catch(e){}
-}
-function loadCart(){
-  try{
-    const raw = localStorage.getItem(CART_STORAGE_KEY);
-    const data = raw ? JSON.parse(raw) : [];
-    if (Array.isArray(data)){ cart = data; updateCart?.(); }
-  }catch(e){}
-}
-
     let currentModalItem = null;
     let currentModalQuantity = 1;
     let currentComboAdding = null;
@@ -847,7 +834,12 @@ function renderMenuItems(category = 'tradicionais') {
         });
 
 
-        const itemToAdd = {
+        
+        // === FIX: combos com preço fechado ===
+        if (currentComboAdding && (currentComboAdding.id === 'combo-dupla' || currentComboAdding.id === 'combo-pizza-refri')) {
+            computedPrice = currentComboAdding.price;
+        }
+const itemToAdd = {
             id: currentComboAdding.id + '-' + selectedFlavors.map(f => f.replace(/\s/g, '_').replace(/[():]/g, '')).join('-'),
             name: currentComboAdding.name,
             price: computedPrice,
@@ -1526,20 +1518,6 @@ skipLink.addEventListener('focus', function() {
 
 skipLink.addEventListener('blur', function() {
     this.style.top = '-40px';
-/* === [PATCH] Wrapper para updateCart + restauração do carrinho === */
-try{
-  const _np_origUpdateCart = updateCart;
-  updateCart = function(){
-    const r = _np_origUpdateCart.apply(this, arguments);
-    try{ saveCart(); }catch(e){}
-    return r;
-  };
-  // Reidrata estado salvo
-  loadCart();
-}catch(e){
-  console.warn('[PATCH] Persistência do carrinho: falhou ao envolver updateCart', e);
-}
-
 });
 
 document.body.insertBefore(skipLink, document.body.firstChild);
