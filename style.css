@@ -1656,3 +1656,18 @@ body.has-alert {
   margin-top: 0;
 }
 
+/* === [PATCH] HEADER: separação WhatsApp x Carrinho === */
+.header-contact{
+  display:flex;
+  align-items:center;
+  padding-right:12px;
+  margin-right:6px;
+  border-right:1px solid rgba(255,255,255,.25);
+}
+.cart-button{ margin-left:14px; }
+
+/* Toque confortável (mobile) */
+@media (max-width:480px){
+  .header-contact{ padding-right:14px; margin-right:8px; }
+  .cart-button{ margin-left:16px; }
+}
