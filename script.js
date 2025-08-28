@@ -87,7 +87,8 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
         { id: 'a-moda', name: 'À Moda', description: 'Molho,\ mussarela,\ lombo\ canadense,\ ovo,\ cebola,\ azeitona,\ orégano\.', category: 'especiais', image: 'images/pizza-a-moda.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'trindade', name: 'Trindade', description: 'Molho, mussarela, lombo canadense, bacon, catupiry, milho, azeitona, orégano.', category: 'especiais', image: 'images/pizza-trindade.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'italiano', name: 'Italiano', description: 'Molho,\ mussarela,\ charque,\ queijo,\ azeitona,\ orégano\.', category: 'especiais', image: 'images/pizza-italiano.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'modada-casa', name: 'Modada da Casa', description: 'Molho, mussarela, charque, creme cheese, azeitona, orégano.', category: 'especiais', image: 'images/pizza-modada-casa.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'matuta', name: 'Matuta', description: 'Molho, mussarela, carne de sol, queijo coalha, orégano, azeitona.', category: 'especiais', image: 'images/pizza-matuta.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'modada-casa', name: 'Moda da Casa', description: 'Molho, mussarela, charque, creme cheese, azeitona, orégano.', category: 'especiais', image: 'images/pizza-modada-casa.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'strogonoff', name: 'Strogonoff', description: 'Molho, mussarela, frango, milho, batata palha, azeitona, orégano.', category: 'especiais', image: 'images/pizza-strogonoff.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
         { id: 'palermo', name: 'Palermo', description: 'Molho, mussarela, charque, milho, cebola, azeitona, orégano.', category: 'especiais', image: 'images/pizza-palermo.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
@@ -1069,13 +1070,35 @@ function renderMenuItems(category = 'tradicionais') {
             message += `- ${item.quantity}x ${item.name} ${item.selectedSize ? '(' + item.selectedSize.size + ')' : ''} ${item.options || ''} = R$ ${formatCurrency(item.price * item.quantity)}\n`;
         });
 
-        message += `\n*Resumo Financeiro:*\n`;
-        message += `Subtotal: R$ ${cartSubtotalSpan.textContent}\n`;
+        
+        // --- Resumo Financeiro para WhatsApp (usa os valores do RESUMO DO PEDIDO) ---
+        const subtotalCalc = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const deliveryFeeCalc = (deliveryOption === 'delivery') ? ENTREGA_PADRAO : 0;
+        const totalCalc = subtotalCalc + deliveryFeeCalc;
+
+        const checkoutSubtotalEl = document.getElementById('checkout-subtotal');
+        const checkoutDeliveryFeeEl = document.getElementById('checkout-delivery-fee');
+        const checkoutTotalEl = document.getElementById('checkout-total');
+
+        const subtotalText = checkoutSubtotalEl ? checkoutSubtotalEl.textContent : formatCurrency(subtotalCalc);
+        const deliveryFeeText = (deliveryOption === 'delivery')
+            ? (checkoutDeliveryFeeEl ? checkoutDeliveryFeeEl.textContent : formatCurrency(deliveryFeeCalc))
+            : null;
+        const totalText = checkoutTotalEl ? checkoutTotalEl.textContent : formatCurrency(totalCalc);
+
+        message += `
+*Resumo Financeiro:*
+`;
+        message += `Subtotal: R$ ${subtotalText}
+`;
         if (deliveryOption === 'delivery') {
-            const deliveryFeeText = document.getElementById('delivery-fee')?.textContent || '0,00';
-            message += `Taxa de Entrega: R$ ${deliveryFeeText}\n`;
+            message += `Taxa de Entrega: R$ ${deliveryFeeText}
+`;
         }
-        message += `*Total: R$ ${cartTotalSpan.textContent}*\n\n`;
+        message += `*Total: R$ ${totalText}*
+
+`;
+
 
         message += `*Detalhes da Entrega:*\n`;
         message += `${deliveryOption === 'delivery' ? 'Entrega em domicílio' : 'Retirada no local'}${addressDetails}\n`;
@@ -1493,4 +1516,3 @@ skipLink.addEventListener('blur', function() {
 });
 
 document.body.insertBefore(skipLink, document.body.firstChild);
-
