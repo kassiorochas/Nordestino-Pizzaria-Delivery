@@ -1,0 +1,3 @@
+# Força HTTPS + www (Netlify)
+http://nordestinopizzariadelivery.com.br/* https://www.nordestinopizzariadelivery.com.br/:splat 301!
+https://nordestinopizzariadelivery.com.br/* https://www.nordestinopizzariadelivery.com.br/:splat 301!
