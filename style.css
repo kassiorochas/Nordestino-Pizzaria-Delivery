@@ -1671,3 +1671,8 @@ body.has-alert {
   .header-contact{ padding-right:14px; margin-right:8px; }
   .cart-button{ margin-left:16px; }
 }
+
+/* === [PATCH] Ocultar telefone do header em telas pequenas === */
+@media (max-width: 820px){
+  .header-contact{ display:none !important; }
+}
