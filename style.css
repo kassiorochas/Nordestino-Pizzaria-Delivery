@@ -1672,10 +1672,10 @@ body.has-alert {
   .cart-button{ margin-left:16px; }
 }
 
-/* === [OVERRIDE] Mobile: ocultar telefone do header (navbar) === */
-@media (max-width: 820px){
-  header .header-contact,
-  header .whatsapp-header{
-    display: none !important;
+/* === [PATCH] Ajuste barra de menu (título "Nosso Cardápio") no mobile === */
+@media (max-width: 768px){
+  #menu-navigation .section-title{
+    margin-top: 12px !important;
+    padding-top: 8px !important;
   }
 }
