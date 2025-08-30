@@ -1,0 +1,7 @@
+# Netlify redirects for Nordestino Pizzaria Delivery
+# 1) Canonical: always use https://www.nordestinopizzariadelivery.com.br
+https://nordestinopizzariadelivery.com.br/*  https://www.nordestinopizzariadelivery.com.br/:splat  301!
+http://nordestinopizzariadelivery.com.br/*   https://www.nordestinopizzariadelivery.com.br/:splat  301!
+
+# 2) Force HTTPS for everything else (eg. http://www -> https://www)
+http://*  https://:splat  301!
