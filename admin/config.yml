@@ -1,0 +1,102 @@
+backend:
+  name: git-gateway
+  branch: main # Branch to update (optional; defaults to master)
+
+# Configuração de mídia
+media_folder: "images/cardapio" # Pasta onde as imagens serão armazenadas
+public_folder: "/images/cardapio" # Caminho público das imagens
+
+# Configurações locais para desenvolvimento
+local_backend: true
+
+collections:
+  # Pizzas Tradicionais
+  - name: "pizzas-tradicionais"
+    label: "Pizzas Tradicionais"
+    folder: "data/cardapio/tradicionais"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Pizza", name: "nome", widget: "string"}
+      - {label: "Descrição", name: "descricao", widget: "text"}
+      - {label: "Preço Média", name: "preco_media", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Preço Grande", name: "preco_grande", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Imagem", name: "imagem", widget: "image", required: false}
+      - {label: "Disponível", name: "disponivel", widget: "boolean", default: true}
+      - {label: "Ordem de Exibição", name: "ordem", widget: "number", default: 1}
+
+  # Pizzas Especiais
+  - name: "pizzas-especiais"
+    label: "Pizzas Especiais"
+    folder: "data/cardapio/especiais"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Pizza", name: "nome", widget: "string"}
+      - {label: "Descrição", name: "descricao", widget: "text"}
+      - {label: "Preço Média", name: "preco_media", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Preço Grande", name: "preco_grande", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Imagem", name: "imagem", widget: "image", required: false}
+      - {label: "Disponível", name: "disponivel", widget: "boolean", default: true}
+      - {label: "Ordem de Exibição", name: "ordem", widget: "number", default: 1}
+
+  # Pizzas Doces
+  - name: "pizzas-doces"
+    label: "Pizzas Doces"
+    folder: "data/cardapio/doces"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Pizza", name: "nome", widget: "string"}
+      - {label: "Descrição", name: "descricao", widget: "text"}
+      - {label: "Preço Média", name: "preco_media", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Preço Grande", name: "preco_grande", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Imagem", name: "imagem", widget: "image", required: false}
+      - {label: "Disponível", name: "disponivel", widget: "boolean", default: true}
+      - {label: "Ordem de Exibição", name: "ordem", widget: "number", default: 1}
+
+  # Bordas Recheadas
+  - name: "bordas"
+    label: "Bordas Recheadas"
+    folder: "data/cardapio/bordas"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Borda", name: "nome", widget: "string"}
+      - {label: "Descrição", name: "descricao", widget: "text"}
+      - {label: "Preço Adicional", name: "preco", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Disponível", name: "disponivel", widget: "boolean", default: true}
+      - {label: "Ordem de Exibição", name: "ordem", widget: "number", default: 1}
+
+  # Bebidas
+  - name: "bebidas"
+    label: "Bebidas"
+    folder: "data/cardapio/bebidas"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Bebida", name: "nome", widget: "string"}
+      - {label: "Descrição", name: "descricao", widget: "text", required: false}
+      - {label: "Preço", name: "preco", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Categoria", name: "categoria", widget: "select", options: ["1l", "2l", "lata", "agua"]}
+      - {label: "Imagem", name: "imagem", widget: "image", required: false}
+      - {label: "Disponível", name: "disponivel", widget: "boolean", default: true}
+      - {label: "Ordem de Exibição", name: "ordem", widget: "number", default: 1}
+
+  # Promoções
+  - name: "promocoes"
+    label: "Promoções"
+    folder: "data/cardapio/promocoes"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nome da Promoção", name: "nome", widget: "string"}
+      - {label: "Descrição", name: "descricao", widget: "text"}
+      - {label: "Preço", name: "preco", widget: "number", value_type: "float", step: 0.01}
+      - {label: "Preço Original", name: "preco_original", widget: "number", value_type: "float", step: 0.01, required: false}
+      - {label: "Imagem", name: "imagem", widget: "image", required: false}
+      - {label: "Disponível", name: "disponivel", widget: "boolean", default: true}
+      - {label: "Ordem de Exibição", name: "ordem", widget: "number", default: 1}
+      - {label: "Data de Início", name: "data_inicio", widget: "datetime", required: false}
+      - {label: "Data de Fim", name: "data_fim", widget: "datetime", required: false}
+
