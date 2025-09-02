@@ -41,37 +41,6 @@
 
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <!-- Netlify Identity para Decap CMS -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
-        
-        // Configuração do Firebase (temporária - será substituída)
-        const firebaseConfig = {
-            apiKey: "AIzaSyBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-            authDomain: "nordestino-pizzaria.firebaseapp.com",
-            projectId: "nordestino-pizzaria",
-            storageBucket: "nordestino-pizzaria.appspot.com",
-            messagingSenderId: "123456789012",
-            appId: "1:123456789012:web:abcdef1234567890abcdef"
-        };
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-        
-        // Disponibilizar globalmente
-        window.firebaseApp = app;
-        window.firebaseAuth = auth;
-        window.firebaseDB = db;
-    </script>
 </head>
 <body>
     <header>
@@ -84,23 +53,10 @@
             <!-- NOVO: Mensagem pré-preenchida para o WhatsApp do cabeçalho -->
             <a href="https://wa.me/5581993613802?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20fazer%20um%20pedido." target="_blank" rel="noopener" class="whatsapp-header"><i class="fab fa-whatsapp"></i> Delivery (81) 9 9361-3802</a>
         </div>
-        <div class="header-actions">
-            <!-- Botão de Login/Usuário -->
-            <button id="login-btn" class="login-button" aria-label="Fazer login">
-                <i class="fas fa-user" aria-hidden="true"></i>
-                <span>Entrar</span>
-            </button>
-            <div id="user-info" class="user-info hidden">
-                <i class="fas fa-user-circle" aria-hidden="true"></i>
-                <span id="user-phone"></span>
-                <button id="logout-btn" class="logout-btn">Sair</button>
-            </div>
-            <!-- Botão do Carrinho -->
-            <button id="view-cart-btn" class="cart-button cart-empty" aria-label="Ver carrinho de compras - 0 itens">
-                <i class="fas fa-shopping-cart" aria-hidden="true"></i>
-                <span id="cart-item-count" class="cart-count">0</span>
-            </button>
-        </div>
+        <button id="view-cart-btn" class="cart-button cart-empty" aria-label="Ver carrinho de compras - 0 itens">
+            <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+            <span id="cart-item-count" class="cart-count">0</span>
+        </button>
     </header>
 
     <main>
@@ -266,232 +222,7 @@
             <p class="confirmation-message"><i class="fas fa-check-circle"></i> Agradecemos a preferência!</p>
             <button class="btn primary full-width" onclick="location.reload()">Fazer Novo Pedido</button>
         </section>
-
-        <!-- Modal de Login por Telefone -->
-        <section id="login-modal" class="section hidden">
-            <h3 class="section-title">Entrar na sua conta</h3>
-            <p class="login-subtitle">Digite seu número de celular para receber um código de verificação</p>
-            
-            <div id="phone-step" class="login-step">
-                <form id="phone-form" class="login-form">
-                    <div class="input-group">
-                        <label for="phone-input">Número do Celular (com DDD):</label>
-                        <input type="tel" id="phone-input" placeholder="Ex: 81999887766" required>
-                        <small class="input-help">Digite apenas números, sem espaços ou símbolos</small>
-                    </div>
-                    <button type="submit" class="btn primary full-width" id="send-code-btn">
-                        <span class="btn-text">Enviar Código</span>
-                        <span class="btn-loading hidden">Enviando...</span>
-                    </button>
-                </form>
-            </div>
-
-            <div id="code-step" class="login-step hidden">
-                <p class="code-sent-message">
-                    <i class="fas fa-sms"></i>
-                    Código enviado para <strong id="phone-display"></strong>
-                </p>
-                <form id="code-form" class="login-form">
-                    <div class="input-group">
-                        <label for="code-input">Código de Verificação:</label>
-                        <input type="text" id="code-input" placeholder="123456" maxlength="6" required>
-                        <small class="input-help">Digite o código de 6 dígitos recebido por SMS</small>
-                    </div>
-                    <button type="submit" class="btn primary full-width" id="verify-code-btn">
-                        <span class="btn-text">Verificar Código</span>
-                        <span class="btn-loading hidden">Verificando...</span>
-                    </button>
-                </form>
-                <button id="resend-code-btn" class="btn secondary full-width mt-1">
-                    Reenviar Código
-                </button>
-                <button id="change-phone-btn" class="btn link">
-                    Alterar número de telefone
-                </button>
-            </div>
-
-            <div id="login-error" class="error-message hidden">
-                <i class="fas fa-exclamation-triangle"></i>
-                <span id="error-text"></span>
-            </div>
-
-            <button id="close-login-btn" class="btn secondary full-width mt-2">Fechar</button>
-        </section>
-
-        <!-- Área "Minha Conta" -->
-        <section id="my-account" class="section hidden">
-            <h3 class="section-title">Minha Conta</h3>
-            
-            <div class="account-info">
-                <div class="account-header">
-                    <i class="fas fa-user-circle"></i>
-                    <div>
-                        <h4 id="account-name">Carregando...</h4>
-                        <p id="account-phone"></p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="account-sections">
-                <button class="account-section-btn" data-section="profile">
-                    <i class="fas fa-user-edit"></i>
-                    <span>Meus Dados</span>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <button class="account-section-btn" data-section="orders">
-                    <i class="fas fa-history"></i>
-                    <span>Histórico de Pedidos</span>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-                <button class="account-section-btn" data-section="addresses">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Meus Endereços</span>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-
-            <button id="back-to-menu-btn" class="btn secondary full-width mt-2">Voltar ao Cardápio</button>
-        </section>
-
-        <!-- Seção: Meus Dados -->
-        <section id="profile-section" class="section hidden">
-            <h3 class="section-title">Meus Dados</h3>
-            
-            <form id="profile-form" class="profile-form">
-                <div class="input-group">
-                    <label for="profile-name">Nome Completo:</label>
-                    <input type="text" id="profile-name" placeholder="Seu nome completo" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="profile-email">E-mail (Opcional):</label>
-                    <input type="email" id="profile-email" placeholder="seu@email.com">
-                    <small class="input-help">Para receber promoções e novidades</small>
-                </div>
-                
-                <div class="input-group">
-                    <label for="profile-birth">Data de Nascimento (Opcional):</label>
-                    <input type="date" id="profile-birth">
-                    <small class="input-help">Para ofertas especiais no seu aniversário</small>
-                </div>
-                
-                <button type="submit" class="btn primary full-width" id="save-profile-btn">
-                    <span class="btn-text">Salvar Dados</span>
-                    <span class="btn-loading hidden">Salvando...</span>
-                </button>
-            </form>
-            
-            <div id="profile-success" class="success-message hidden">
-                <i class="fas fa-check-circle"></i>
-                <span>Dados salvos com sucesso!</span>
-            </div>
-            
-            <button id="back-to-account-btn" class="btn secondary full-width mt-2">Voltar</button>
-        </section>
-
-        <!-- Seção: Histórico de Pedidos -->
-        <section id="orders-section" class="section hidden">
-            <h3 class="section-title">Histórico de Pedidos</h3>
-            
-            <div id="orders-loading" class="loading-message">
-                <i class="fas fa-spinner fa-spin"></i>
-                <span>Carregando pedidos...</span>
-            </div>
-            
-            <div id="orders-empty" class="empty-message hidden">
-                <i class="fas fa-receipt"></i>
-                <h4>Nenhum pedido encontrado</h4>
-                <p>Você ainda não fez nenhum pedido. Que tal começar agora?</p>
-                <button class="btn primary" onclick="window.authManager.showMainMenu()">Ver Cardápio</button>
-            </div>
-            
-            <div id="orders-list" class="orders-list hidden">
-                <!-- Pedidos serão carregados aqui dinamicamente -->
-            </div>
-            
-            <button id="back-to-account-orders-btn" class="btn secondary full-width mt-2">Voltar</button>
-        </section>
-
-        <!-- Seção: Meus Endereços -->
-        <section id="addresses-section" class="section hidden">
-            <h3 class="section-title">Meus Endereços</h3>
-            
-            <div class="addresses-header">
-                <p>Gerencie seus endereços de entrega para pedidos mais rápidos</p>
-                <button id="add-address-btn" class="btn primary">
-                    <i class="fas fa-plus"></i>
-                    Adicionar Endereço
-                </button>
-            </div>
-            
-            <div id="addresses-loading" class="loading-message">
-                <i class="fas fa-spinner fa-spin"></i>
-                <span>Carregando endereços...</span>
-            </div>
-            
-            <div id="addresses-empty" class="empty-message hidden">
-                <i class="fas fa-map-marker-alt"></i>
-                <h4>Nenhum endereço cadastrado</h4>
-                <p>Adicione um endereço para agilizar seus pedidos</p>
-            </div>
-            
-            <div id="addresses-list" class="addresses-list hidden">
-                <!-- Endereços serão carregados aqui dinamicamente -->
-            </div>
-            
-            <button id="back-to-account-addresses-btn" class="btn secondary full-width mt-2">Voltar</button>
-        </section>
-
-        <!-- Modal: Adicionar/Editar Endereço -->
-        <section id="address-modal" class="section hidden">
-            <h3 class="section-title" id="address-modal-title">Adicionar Endereço</h3>
-            
-            <form id="address-form" class="address-form">
-                <input type="hidden" id="address-id">
-                
-                <div class="input-group">
-                    <label for="address-label">Nome do Endereço:</label>
-                    <input type="text" id="address-label" placeholder="Ex: Casa, Trabalho, Casa da Vó" required>
-                    <small class="input-help">Para identificar facilmente o endereço</small>
-                </div>
-                
-                <div class="input-group">
-                    <label for="address-street">Rua e Número:</label>
-                    <input type="text" id="address-street" placeholder="Ex: Rua das Flores, 123" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="address-neighborhood">Bairro:</label>
-                    <input type="text" id="address-neighborhood" placeholder="Nome do bairro" required>
-                </div>
-                
-                <div class="input-group">
-                    <label for="address-complement">Complemento (Opcional):</label>
-                    <input type="text" id="address-complement" placeholder="Ex: Apto 101, Bloco B">
-                </div>
-                
-                <div class="input-group">
-                    <label for="address-reference">Ponto de Referência (Opcional):</label>
-                    <input type="text" id="address-reference" placeholder="Ex: Próximo ao mercado">
-                </div>
-                
-                <div class="checkbox-group">
-                    <input type="checkbox" id="address-default">
-                    <label for="address-default">Definir como endereço padrão</label>
-                </div>
-                
-                <button type="submit" class="btn primary full-width" id="save-address-btn">
-                    <span class="btn-text">Salvar Endereço</span>
-                    <span class="btn-loading hidden">Salvando...</span>
-                </button>
-            </form>
-            
-            <button id="cancel-address-btn" class="btn secondary full-width mt-1">Cancelar</button>
-        </section>
     </main>
-
-    <!-- Container para reCAPTCHA (invisível) -->
-    <div id="recaptcha-container"></div>
 
     <footer>
         <p><strong>Nordestino Pizzaria Delivery</strong></p>
@@ -565,23 +296,7 @@
             });
         }
     </script>
-    <script src="cardapio-loader.js"></script>
-    <script src="auth-manager.js"></script>
-    <script src="user-data-manager.js"></script>
     <script src="script.js"></script>
-    
-    <!-- Netlify Identity Script -->
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-    </script>
 </body>
 </html>
 

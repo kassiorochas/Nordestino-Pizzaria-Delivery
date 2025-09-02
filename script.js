@@ -1115,48 +1115,6 @@ const itemToAdd = {
 
         message += `_Pedido enviado via App da Pizzaria._`;
 
-        // === INTEGRAÇÃO COM FIRESTORE ===
-        // Salva o pedido no histórico se o usuário estiver logado
-        if (window.userDataManager && window.authManager && window.authManager.isLoggedIn()) {
-            const orderData = {
-                cliente: {
-                    nome: customerName,
-                    telefone: customerPhone
-                },
-                itens: cart.map(item => ({
-                    nome: item.name,
-                    quantidade: item.quantity,
-                    tamanho: item.selectedSize ? item.selectedSize.size : null,
-                    opcoes: item.options || '',
-                    precoUnitario: item.price / item.quantity,
-                    precoTotal: item.price * item.quantity,
-                    observacoes: item.notes || ''
-                })),
-                entrega: deliveryOption,
-                endereco: deliveryOption === 'delivery' ? {
-                    rua: document.getElementById('customer-address').value.trim(),
-                    bairro: document.getElementById('customer-neighborhood').value.trim(),
-                    complemento: document.getElementById('customer-complement').value.trim()
-                } : null,
-                pagamento: paymentMethod,
-                observacoes: orderNotes,
-                subtotal: subtotalCalc,
-                taxaEntrega: deliveryFeeCalc,
-                total: totalCalc
-            };
-            
-            // Salva no Firestore (não bloqueia o envio do WhatsApp)
-            window.userDataManager.saveOrder(orderData).then(result => {
-                if (result.success) {
-                    console.log('Pedido salvo no histórico:', result.id);
-                } else {
-                    console.log('Erro ao salvar pedido no histórico');
-                }
-            }).catch(error => {
-                console.error('Erro ao salvar pedido:', error);
-            });
-        }
-
         const encodedMessage = encodeURIComponent(message);
         const whatsappUrl = `https://api.whatsapp.com/send?phone=${PIZZARIA_WHATSAPP}&text=${encodedMessage}`;
         window.open(whatsappUrl, '_blank');
