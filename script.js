@@ -836,7 +836,7 @@ function renderMenuItems(category = 'tradicionais') {
 
         
         // === FIX: combos com preço fechado ===
-        if (currentComboAdding && (currentComboAdding.id === 'combo-dupla' || currentComboAdding.id === 'combo-pizza-refri')) {
+        if (currentComboAdding && currentComboAdding.id === 'combo-dupla') {
             computedPrice = currentComboAdding.price;
         }
 const itemToAdd = {
