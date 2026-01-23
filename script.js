@@ -1060,8 +1060,8 @@ const itemToAdd = {
         } else if (paymentMethod === 'card') {
             paymentDetails = '\nCartão na Entrega';
         } else if (paymentMethod === 'pix') {
-            const pixKey = '81982687572';
-            const pixName = 'Elisandra Ferreira de Andrade';
+            const pixKey = '58.858.350/0001-73';
+            const pixName = 'Elisandra Ferreira de Andrade Silva';
             const pixBank = 'Banco do Brasil';
             paymentDetails = `\nPIX (Favor enviar para):\nChave: ${pixKey}\nNome: ${pixName}\nBanco: ${pixBank}`;
         }
