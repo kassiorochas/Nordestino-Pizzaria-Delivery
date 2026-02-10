@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
 
     // Regra: Entrega grátis SOMENTE quando o carrinho tiver apenas o Combo Pizza + Refri
     const COMBO_FREE_DELIVERY_ID = 'combo-pizza-refri'; // id-base do combo
-    function isOnlyFreeDeliveryComboInCart() {
+    function hasFreeDeliveryComboInCart() {
         if (!cart || cart.length === 0) return false;
-        return cart.every(item => {
+        return cart.some(item => {
             return (item.isCombo === true) && (item.id && item.id.startsWith(COMBO_FREE_DELIVERY_ID));
         });
     }
@@ -457,9 +457,9 @@ function renderMenuItems(category = 'tradicionais') {
 
         // Adicionar mensagem informativa sobre taxa de entrega
         const deliveryInfoDiv = document.getElementById('delivery-info-message');
-        const onlyCombo = isOnlyFreeDeliveryComboInCart();
-        if (deliveryInfoDiv && itemCount > 0) {
-            if (onlyCombo) {
+        const hasComboFreeDelivery = hasFreeDeliveryComboInCart();
+if (deliveryInfoDiv && itemCount > 0) {
+            if (hasComboFreeDelivery) {
                 // Não avisar taxa quando for apenas o combo (entrega grátis)
                 deliveryInfoDiv.classList.add('hidden');
                 deliveryInfoDiv.innerHTML = '';
@@ -964,14 +964,14 @@ const itemToAdd = {
 
     function updateCartWithDelivery() {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const onlyCombo = isOnlyFreeDeliveryComboInCart();
-        const deliveryFee = deliveryOptionDelivery.checked ? (onlyCombo ? 0 : ENTREGA_PADRAO) : 0;
+        const hasComboFreeDelivery = hasFreeDeliveryComboInCart();
+const deliveryFee = deliveryOptionDelivery.checked ? (hasComboFreeDelivery ? 0 : ENTREGA_PADRAO) : 0;
         const total = subtotal + deliveryFee;
 
         // Atualizar texto da opção de entrega (grátis somente para o combo)
         const deliveryLabel = document.querySelector('label[for="delivery-option-delivery"]');
         if (deliveryLabel) {
-            deliveryLabel.textContent = onlyCombo
+            deliveryLabel.textContent = hasComboFreeDelivery
                 ? 'Entrega em Domicílio (Grátis)'
                 : `Entrega em Domicílio (R$ ${formatCurrency(ENTREGA_PADRAO)})`;
         }
@@ -1090,8 +1090,8 @@ const itemToAdd = {
         
         // --- Resumo Financeiro para WhatsApp (usa os valores do RESUMO DO PEDIDO) ---
         const subtotalCalc = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const onlyCombo = isOnlyFreeDeliveryComboInCart();
-        const deliveryFeeCalc = (deliveryOption === 'delivery') ? (onlyCombo ? 0 : ENTREGA_PADRAO) : 0;
+        const hasComboFreeDelivery = hasFreeDeliveryComboInCart();
+const deliveryFeeCalc = (deliveryOption === 'delivery') ? (hasComboFreeDelivery ? 0 : ENTREGA_PADRAO) : 0;
         const totalCalc = subtotalCalc + deliveryFeeCalc;
 
         const checkoutSubtotalEl = document.getElementById('checkout-subtotal');
