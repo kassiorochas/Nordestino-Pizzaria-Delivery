@@ -31,6 +31,17 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
     const PIZZARIA_WHATSAPP = '5581993613802'; // WhatsApp da Pizzaria
     const ENTREGA_PADRAO = 3.00; // Taxa de entrega padrão
 
+
+    // Regra: Entrega grátis SOMENTE quando o carrinho tiver apenas o Combo Pizza + Refri
+    const COMBO_FREE_DELIVERY_ID = 'combo-pizza-refri'; // id-base do combo
+    function isOnlyFreeDeliveryComboInCart() {
+        if (!cart || cart.length === 0) return false;
+        return cart.every(item => {
+            return (item.isCombo === true) && (item.id && item.id.startsWith(COMBO_FREE_DELIVERY_ID));
+        });
+    }
+
+
     
     // =========================
     // NAVEGAÇÃO ENTRE SEÇÕES
@@ -446,9 +457,16 @@ function renderMenuItems(category = 'tradicionais') {
 
         // Adicionar mensagem informativa sobre taxa de entrega
         const deliveryInfoDiv = document.getElementById('delivery-info-message');
+        const onlyCombo = isOnlyFreeDeliveryComboInCart();
         if (deliveryInfoDiv && itemCount > 0) {
-            deliveryInfoDiv.innerHTML = '💡 Se escolher entrega em domicílio, será acrescida uma taxa de R$ 3,00';
-            deliveryInfoDiv.classList.remove('hidden');
+            if (onlyCombo) {
+                // Não avisar taxa quando for apenas o combo (entrega grátis)
+                deliveryInfoDiv.classList.add('hidden');
+                deliveryInfoDiv.innerHTML = '';
+            } else {
+                deliveryInfoDiv.innerHTML = `💡 Se escolher entrega em domicílio, será acrescida uma taxa de R$ ${formatCurrency(ENTREGA_PADRAO)}`;
+                deliveryInfoDiv.classList.remove('hidden');
+            }
         } else if (deliveryInfoDiv) {
             deliveryInfoDiv.classList.add('hidden');
         }
@@ -946,8 +964,17 @@ const itemToAdd = {
 
     function updateCartWithDelivery() {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const deliveryFee = deliveryOptionDelivery.checked ? ENTREGA_PADRAO : 0;
+        const onlyCombo = isOnlyFreeDeliveryComboInCart();
+        const deliveryFee = deliveryOptionDelivery.checked ? (onlyCombo ? 0 : ENTREGA_PADRAO) : 0;
         const total = subtotal + deliveryFee;
+
+        // Atualizar texto da opção de entrega (grátis somente para o combo)
+        const deliveryLabel = document.querySelector('label[for="delivery-option-delivery"]');
+        if (deliveryLabel) {
+            deliveryLabel.textContent = onlyCombo
+                ? 'Entrega em Domicílio (Grátis)'
+                : `Entrega em Domicílio (R$ ${formatCurrency(ENTREGA_PADRAO)})`;
+        }
 
         // Atualizar elementos da página de checkout
         const checkoutSubtotalSpan = document.getElementById('checkout-subtotal');
@@ -961,7 +988,7 @@ const itemToAdd = {
         // Mostrar/ocultar linha da taxa de entrega
         const deliveryFeeRow = document.getElementById('delivery-fee-row');
         if (deliveryFeeRow) {
-            if (deliveryOptionDelivery.checked) {
+            if (deliveryOptionDelivery.checked && deliveryFee > 0) {
                 deliveryFeeRow.classList.remove('hidden');
             } else {
                 deliveryFeeRow.classList.add('hidden');
@@ -1063,7 +1090,8 @@ const itemToAdd = {
         
         // --- Resumo Financeiro para WhatsApp (usa os valores do RESUMO DO PEDIDO) ---
         const subtotalCalc = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const deliveryFeeCalc = (deliveryOption === 'delivery') ? ENTREGA_PADRAO : 0;
+        const onlyCombo = isOnlyFreeDeliveryComboInCart();
+        const deliveryFeeCalc = (deliveryOption === 'delivery') ? (onlyCombo ? 0 : ENTREGA_PADRAO) : 0;
         const totalCalc = subtotalCalc + deliveryFeeCalc;
 
         const checkoutSubtotalEl = document.getElementById('checkout-subtotal');
@@ -1081,7 +1109,7 @@ const itemToAdd = {
 `;
         message += `Subtotal: R$ ${subtotalText}
 `;
-        if (deliveryOption === 'delivery') {
+        if (deliveryOption === 'delivery' && deliveryFeeCalc > 0) {
             message += `Taxa de Entrega: R$ ${deliveryFeeText}
 `;
         }
