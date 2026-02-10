@@ -62,42 +62,42 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
     // DADOS DO CARDÁPIO
     // =========================
     const menuItems = [
-        // PIZZAS TRADICIONAIS (Média R$33,00 | Grande R$36,00)
-        { id: 'mussarela', name: 'Mussarela', description: 'Molho, mussarela, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-mussarela.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'calabresa', name: 'Calabresa', description: 'Molho,\ mussarela,\ calabresa,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-calabresa.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'frango-catupiry', name: 'Frango c/ Catupiry', description: 'Molho, mussarela, frango, catupiry, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-catupiry.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'frango-com-cheddar', name: 'Frango c/ Cheddar', description: 'Molho, mussarela, frango, cheddar, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-cheddar.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'frango-acebolado', name: 'Frango Acebolado', description: 'Molho, mussarela, frango, cebola, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-acebolado.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'especial-de-frango', name: 'Especial de Frango', description: 'Molho, frango, bacon, mussarela, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-especial-frango.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'tres-queijos', name: 'Três Queijos', description: 'Molho, mussarela, cheddar, catupiry, queijo parmesão, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-tres-queijos.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'bacon', name: 'Bacon', description: 'Molho,\ mussarela,\ bacon,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-bacon.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'baiana', name: 'Baiana', description: 'Molho, mussarela, calabresa, milho, cheddar, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-baiana.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'mista', name: 'Mista', description: 'Molho,\ frango,\ presunto,\ milho,\ mussarela,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-mista.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'napolitana', name: 'Napolitana', description: 'Molho,\ mussarela,\ tomate,\ queijo\ parmesão,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-napolitana.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'romana', name: 'Romana', description: 'Molho,\ mussarela,\ presunto,\ milho,\ catupiry,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-romana.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'carioca', name: 'Carioca', description: 'Molho,\ mussarela,\ calabresa,\ ovo,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-carioca.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'caipira', name: 'Caipira', description: 'Molho,\ calabresa,\ milho,\ catupiry,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-caipira.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'portuguesa', name: 'Portuguesa', description: 'Molho,\ mussarela,\ presunto,\ ovo,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-portuguesa.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'quatro-queijos', name: 'Quatro Queijos', description: 'Molho,\ mussarela,\ catupiry,\ cheddar,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-quatro-queijos.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        // PIZZAS TRADICIONAIS (Média R$33,00 | Grande R$40,00)
+        { id: 'mussarela', name: 'Mussarela', description: 'Molho, mussarela, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-mussarela.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'calabresa', name: 'Calabresa', description: 'Molho,\ mussarela,\ calabresa,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-calabresa.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'frango-catupiry', name: 'Frango c/ Catupiry', description: 'Molho, mussarela, frango, catupiry, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-catupiry.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'frango-com-cheddar', name: 'Frango c/ Cheddar', description: 'Molho, mussarela, frango, cheddar, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-cheddar.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'frango-acebolado', name: 'Frango Acebolado', description: 'Molho, mussarela, frango, cebola, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-frango-acebolado.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'especial-de-frango', name: 'Especial de Frango', description: 'Molho, frango, bacon, mussarela, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-especial-frango.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'tres-queijos', name: 'Três Queijos', description: 'Molho, mussarela, cheddar, catupiry, queijo parmesão, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-tres-queijos.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'bacon', name: 'Bacon', description: 'Molho,\ mussarela,\ bacon,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-bacon.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'baiana', name: 'Baiana', description: 'Molho, mussarela, calabresa, milho, cheddar, orégano, azeitona.', category: 'tradicionais', image: 'images/pizza-baiana.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'mista', name: 'Mista', description: 'Molho,\ frango,\ presunto,\ milho,\ mussarela,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-mista.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'napolitana', name: 'Napolitana', description: 'Molho,\ mussarela,\ tomate,\ queijo\ parmesão,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-napolitana.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'romana', name: 'Romana', description: 'Molho,\ mussarela,\ presunto,\ milho,\ catupiry,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-romana.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'carioca', name: 'Carioca', description: 'Molho,\ mussarela,\ calabresa,\ ovo,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-carioca.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'caipira', name: 'Caipira', description: 'Molho,\ calabresa,\ milho,\ catupiry,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-caipira.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'portuguesa', name: 'Portuguesa', description: 'Molho,\ mussarela,\ presunto,\ ovo,\ cebola,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-portuguesa.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'quatro-queijos', name: 'Quatro Queijos', description: 'Molho,\ mussarela,\ catupiry,\ cheddar,\ orégano,\ azeitona\.', category: 'tradicionais', image: 'images/pizza-quatro-queijos.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
         // PIZZAS ESPECIAIS
         { id: 'camarao', name: 'Camarão', description: 'Molho, mussarela, camarão, catupiry, orégano, azeitona.', category: 'especiais', image: 'images/pizza-camarao.jpeg', priceOptions: { media: { size: 'Média', price: 45.00 }, grande: { size: 'Grande', price: 55.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'atum', name: 'Atum', description: 'Molho, mussarela, atum, cebola, orégano, azeitona.', category: 'especiais', image: 'images/pizza-atum.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'nordestina-pizza', name: 'Nordestina', description: 'Molho,\ mussarela,\ carne\ de\ sol,\ milho,\ catupiry,\ orégano,\ azeitona\.', category: 'especiais', image: 'images/pizza-nordestina.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'a-moda', name: 'À Moda', description: 'Molho,\ mussarela,\ lombo\ canadense,\ ovo,\ cebola,\ azeitona,\ orégano\.', category: 'especiais', image: 'images/pizza-a-moda.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'trindade', name: 'Trindade', description: 'Molho, mussarela, lombo canadense, bacon, catupiry, milho, azeitona, orégano.', category: 'especiais', image: 'images/pizza-trindade.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'italiano', name: 'Italiano', description: 'Molho,\ mussarela,\ charque,\ queijo,\ azeitona,\ orégano\.', category: 'especiais', image: 'images/pizza-italiano.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'matuta', name: 'Matuta', description: 'Molho, mussarela, carne de sol, queijo coalha, orégano, azeitona.', category: 'especiais', image: 'images/pizza-matuta.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'modada-casa', name: 'Moda da Casa', description: 'Molho, mussarela, charque, creme cheese, azeitona, orégano.', category: 'especiais', image: 'images/pizza-modada-casa.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'strogonoff', name: 'Strogonoff', description: 'Molho, mussarela, frango, milho, batata palha, azeitona, orégano.', category: 'especiais', image: 'images/pizza-strogonoff.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'palermo', name: 'Palermo', description: 'Molho, mussarela, charque, milho, cebola, azeitona, orégano.', category: 'especiais', image: 'images/pizza-palermo.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 43.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'atum', name: 'Atum', description: 'Molho, mussarela, atum, cebola, orégano, azeitona.', category: 'especiais', image: 'images/pizza-atum.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'nordestina-pizza', name: 'Nordestina', description: 'Molho,\ mussarela,\ carne\ de\ sol,\ milho,\ catupiry,\ orégano,\ azeitona\.', category: 'especiais', image: 'images/pizza-nordestina.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'a-moda', name: 'À Moda', description: 'Molho,\ mussarela,\ lombo\ canadense,\ ovo,\ cebola,\ azeitona,\ orégano\.', category: 'especiais', image: 'images/pizza-a-moda.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'trindade', name: 'Trindade', description: 'Molho, mussarela, lombo canadense, bacon, catupiry, milho, azeitona, orégano.', category: 'especiais', image: 'images/pizza-trindade.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'italiano', name: 'Italiano', description: 'Molho,\ mussarela,\ charque,\ queijo,\ azeitona,\ orégano\.', category: 'especiais', image: 'images/pizza-italiano.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'matuta', name: 'Matuta', description: 'Molho, mussarela, carne de sol, queijo coalha, orégano, azeitona.', category: 'especiais', image: 'images/pizza-matuta.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'modada-casa', name: 'Moda da Casa', description: 'Molho, mussarela, charque, creme cheese, azeitona, orégano.', category: 'especiais', image: 'images/pizza-modada-casa.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'strogonoff', name: 'Strogonoff', description: 'Molho, mussarela, frango, milho, batata palha, azeitona, orégano.', category: 'especiais', image: 'images/pizza-strogonoff.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'palermo', name: 'Palermo', description: 'Molho, mussarela, charque, milho, cebola, azeitona, orégano.', category: 'especiais', image: 'images/pizza-palermo.jpeg', priceOptions: { media: { size: 'Média', price: 40.00 }, grande: { size: 'Grande', price: 45.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
         // PIZZAS DOCES
-        { id: 'brigadeiro', name: 'Brigadeiro', description: 'Chocolate, granulado.', category: 'doces', image: 'images/pizza-brigadeiro.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'beijinho', name: 'Beijinho', description: 'Doce de leite, coco ralado.', category: 'doces', image: 'images/pizza-beijinho.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'cartola', name: 'Cartola', description: 'Banana, canela.', category: 'doces', image: 'images/pizza-cartola.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'romeu-e-julieta', name: 'Romeu e Julieta', description: 'Doce de goiaba, catupiry.', category: 'doces', image: 'images/pizza-romeu-e-julieta.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
-        { id: 'm-m', name: 'M&M', description: 'Chocolate, M&M.', category: 'doces', image: 'images/pizza-m-m.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 36.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'brigadeiro', name: 'Brigadeiro', description: 'Chocolate, granulado.', category: 'doces', image: 'images/pizza-brigadeiro.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'beijinho', name: 'Beijinho', description: 'Doce de leite, coco ralado.', category: 'doces', image: 'images/pizza-beijinho.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'cartola', name: 'Cartola', description: 'Banana, canela.', category: 'doces', image: 'images/pizza-cartola.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'romeu-e-julieta', name: 'Romeu e Julieta', description: 'Doce de goiaba, catupiry.', category: 'doces', image: 'images/pizza-romeu-e-julieta.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
+        { id: 'm-m', name: 'M&M', description: 'Chocolate, M&M.', category: 'doces', image: 'images/pizza-m-m.jpeg', priceOptions: { media: { size: 'Média', price: 33.00 }, grande: { size: 'Grande', price: 40.00 } }, defaultSize: 'grande', allowTwoFlavors: true },
 
         // BORDAS
         { id: 'borda-chocolate', name: 'Borda Recheada de Chocolate', description: 'Recheio cremoso de chocolate na borda.', category: 'bordas', image: 'images/borda-chocolate.jpeg', priceOptions: { unica: { size: 'Única', price: 7.00 } }, defaultSize: 'unica' },
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
             description: 'Fanta Laranja.',
             category: 'bebidas',
             image: 'images/refri-fanta-1l.jpeg',
-            priceOptions: { '1l': { size: '1L', price: 8.00 }, '2l': { size: '2L', price: 10.00 } },
+            priceOptions: { '1l': { size: '1L', price: 9.00 }, '2l': { size: '2L', price: 11.00 } },
             defaultSize: '1l'
         },
         { id: 'refrigerante-em-lata', name: 'Refrigerante em Lata', description: 'Refrigerante em Lata (vários sabores).', category: 'bebidas', image: 'images/refri-em-lata.jpeg', priceOptions: { unica: { size: 'Lata', price: 5.00 } }, defaultSize: 'unica' },
@@ -160,20 +160,11 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
             id: 'combo-pizza-refri',
             name: 'Combo Pizza + Refri 1L',
             description: '1 Pizza Grande + 1 Refrigerante Guaraná 1L.',
-            price: 36.00,
+            price: 40.00,
             image: 'images/combo-pizza-refri.jpeg',
             pizzasIncluded: 1,
             includesBeverage: true // <- ESTE dispensa o lembrete
         },
-        {
-            id: 'combo-dupla',
-            name: 'Combo Pizza Dupla',
-            description: '2 Pizzas Grandes Tradicionais.',
-            price: 60.00,
-            image: 'images/combo-pizza-dupla.jpeg',
-            pizzasIncluded: 2,
-            includesBeverage: false // <- NÃO dispensa o lembrete
-        }
     ];
 
     // =========================
@@ -754,7 +745,7 @@ function renderMenuItems(category = 'tradicionais') {
         button.addEventListener('click', (e) => {
             const comboId = e.target.dataset.itemId;
             currentComboAdding = comboItems.find(c => c.id === comboId);
-            const eligible = (currentComboAdding && currentComboAdding.id === 'combo-dupla') ? tradicionaisPizzas : (typeof comboEligiblePizzas !== 'undefined' ? comboEligiblePizzas : [...tradicionaisPizzas, ...especiaisPizzas]);
+            const eligible = (typeof comboEligiblePizzas !== 'undefined') ? comboEligiblePizzas : [...tradicionaisPizzas, ...especiaisPizzas];
             if (!currentComboAdding) {
                 console.error('Combo não encontrado:', comboId);
                 return;
@@ -833,12 +824,6 @@ function renderMenuItems(category = 'tradicionais') {
             }
         });
 
-
-        
-        // === FIX: combos com preço fechado ===
-        if (currentComboAdding && currentComboAdding.id === 'combo-dupla') {
-            computedPrice = currentComboAdding.price;
-        }
 const itemToAdd = {
             id: currentComboAdding.id + '-' + selectedFlavors.map(f => f.replace(/\s/g, '_').replace(/[():]/g, '')).join('-'),
             name: currentComboAdding.name,

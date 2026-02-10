@@ -20,7 +20,6 @@ const imageAssets = [
     // Imagens do cardápio e promoções
     './images/hero-pizza-background.jpeg',
     './images/combo-pizza-refri-hq.jpeg',
-    './images/combo-pizza-dupla-hq.jpeg',
     './images/pizza-mussarela.jpeg',
     './images/pizza-calabresa.jpeg',
     './images/pizza-frango-catupiry.jpeg',
