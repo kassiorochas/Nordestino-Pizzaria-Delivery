@@ -1679,3 +1679,100 @@ body.has-alert {
     display: none !important;
   }
 }
+
+/* ================== BANNER PROMO APP-LIKE ================== */
+.promo-banner.hidden { display: none !important; }
+
+.promo-banner{
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: grid;
+  place-items: center;
+}
+
+.promo-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.75);
+  backdrop-filter: blur(10px);
+}
+
+.promo-stage{
+  position: relative;
+  width: min(560px, 96vw);
+  max-height: 94vh;
+  display: grid;
+  place-items: center;
+  animation: promoIn .4s ease;
+}
+
+/* PNG full sem cortar */
+.promo-image{
+  width: 100%;
+  height: auto;
+  max-height: 85vh;       /* deixa espaço pro botão */
+  object-fit: contain;    /* não corta */
+  display: block;
+  filter: drop-shadow(0 25px 60px rgba(0,0,0,.55));
+}
+
+.promo-actions{
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(360px, 90vw);
+  display: grid;
+  gap: 10px;
+  text-align: center;
+}
+
+.promo-cta{
+  border: 0;
+  border-radius: 999px;
+  padding: 14px 16px;
+  font-weight: 900;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg,#ffcc00,#ff6a00,#e10000);
+  box-shadow: 0 18px 40px rgba(0,0,0,.45);
+  transition: transform .2s ease;
+}
+
+.promo-cta:active{ transform: scale(.97); }
+
+.promo-hint{
+  font-size: .85rem;
+  color: rgba(255,255,255,.8);
+  text-shadow: 0 2px 8px rgba(0,0,0,.45);
+}
+
+/* Botão X */
+.promo-close{
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 0;
+  font-size: 26px;
+  color: #fff;
+  background: rgba(0,0,0,.45);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 14px 30px rgba(0,0,0,.35);
+}
+
+.promo-close:active{ transform: scale(.97); }
+
+@keyframes promoIn{
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px){
+  .promo-image{ max-height: 82vh; }
+  .promo-actions{ bottom: 14px; }
+}

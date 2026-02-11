@@ -275,6 +275,31 @@
         </div>
     </div>
 
+
+    <!-- ================== BANNER PROMO (APP-LIKE) ================== -->
+    <div id="promo-banner" class="promo-banner hidden" aria-hidden="true">
+        <div class="promo-backdrop" aria-label="Fechar promoção"></div>
+
+        <div class="promo-stage" role="dialog" aria-modal="true" aria-label="Promoção: Entrega Grátis">
+            <button class="promo-close" type="button" aria-label="Fechar">×</button>
+
+            <img
+                src="images/promo-combo-entrega-gratis.png"
+                alt="Entrega grátis no combo Pizza + Refri"
+                class="promo-image"
+                loading="eager"
+            />
+
+            <div class="promo-actions">
+                <button id="promo-add-combo-btn" type="button" class="promo-cta">
+                    🛵 Adicionar combo agora
+                </button>
+                <div class="promo-hint">Toque fora para fechar</div>
+            </div>
+        </div>
+    </div>
+    <!-- ================== /BANNER PROMO ================== -->
+
     <script>
         // Registro do Service Worker
         if (\'serviceWorker\' in navigator) {

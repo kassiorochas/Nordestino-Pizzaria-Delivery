@@ -1555,3 +1555,75 @@ skipLink.addEventListener('blur', function() {
 });
 
 document.body.insertBefore(skipLink, document.body.firstChild);
+
+/* ================== BANNER PROMO (APP-LIKE) ================== */
+document.addEventListener('DOMContentLoaded', function promoBannerInit_appLike(){
+    const banner = document.getElementById('promo-banner');
+    if (!banner) return;
+
+    const backdrop = banner.querySelector('.promo-backdrop');
+    const closeBtn = banner.querySelector('.promo-close');
+    const addBtn = document.getElementById('promo-add-combo-btn');
+
+    const STORAGE_KEY = 'np_promo_combo_hide_until';
+    const now = Date.now();
+    const hideUntil = Number(localStorage.getItem(STORAGE_KEY) || 0);
+
+    // 1x por dia
+    if (hideUntil && now < hideUntil) return;
+
+    function showBanner(){
+        banner.classList.remove('hidden');
+        banner.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBanner(){
+        banner.classList.add('hidden');
+        banner.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        localStorage.setItem(STORAGE_KEY, String(Date.now() + 24*60*60*1000));
+    }
+
+    // Mostra com delay curtinho (feel de app)
+    setTimeout(showBanner, 350);
+
+    // Fechar (fora)
+    if (backdrop){
+        backdrop.addEventListener('click', closeBanner);
+    }
+
+    // Fechar (X)
+    if (closeBtn){
+        closeBtn.style.pointerEvents = 'auto';
+        closeBtn.addEventListener('click', function(e){
+            e.preventDefault();
+            e.stopPropagation();
+            closeBanner();
+        });
+    }
+
+    // ESC fecha
+    document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && !banner.classList.contains('hidden')){
+            closeBanner();
+        }
+    });
+
+    // CTA: adicionar combo
+    if (addBtn){
+        addBtn.addEventListener('click', function(){
+            if (navigator.vibrate) navigator.vibrate(15);
+
+            closeBanner();
+
+            const comboId = 'combo-pizza-refri';
+            const comboButton = document.querySelector(`.add-to-cart-promo[data-item-id="${comboId}"]`);
+            if (comboButton) comboButton.click();
+
+            setTimeout(() => {
+                document.getElementById('cart')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 250);
+        });
+    }
+});
