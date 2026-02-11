@@ -1715,6 +1715,8 @@ body.has-alert {
   object-fit: contain;    /* não corta */
   display: block;
   filter: drop-shadow(0 25px 60px rgba(0,0,0,.55));
+
+  pointer-events: none;
 }
 
 .promo-actions{
@@ -1763,6 +1765,9 @@ body.has-alert {
   cursor: pointer;
   backdrop-filter: blur(10px);
   box-shadow: 0 14px 30px rgba(0,0,0,.35);
+
+  z-index: 3;
+  pointer-events: auto;
 }
 
 .promo-close:active{ transform: scale(.97); }

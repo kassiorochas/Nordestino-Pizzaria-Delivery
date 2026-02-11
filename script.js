@@ -1593,14 +1593,17 @@ document.addEventListener('DOMContentLoaded', function promoBannerInit_appLike()
         backdrop.addEventListener('click', closeBanner);
     }
 
-    // Fechar (X)
+        // Fechar (X)
     if (closeBtn){
+        // garante que o botão fique acima da imagem (clique não “vaza”)
         closeBtn.style.pointerEvents = 'auto';
-        closeBtn.addEventListener('click', function(e){
+        closeBtn.style.zIndex = '3';
+
+        closeBtn.onclick = function(e){
             e.preventDefault();
             e.stopPropagation();
             closeBanner();
-        });
+        };
     }
 
     // ESC fecha
