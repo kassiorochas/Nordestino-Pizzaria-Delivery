@@ -31,14 +31,35 @@ document.addEventListener('DOMContentLoaded', _np_updateMenuCompact);
     const PIZZARIA_WHATSAPP = '5581993613802'; // WhatsApp da Pizzaria
     const ENTREGA_PADRAO = 3.00; // Taxa de entrega padrão
 
-
-    // Regra: Entrega grátis SOMENTE quando o carrinho tiver apenas o Combo Pizza + Refri
+    // Regras de entrega:
+    // - Entrega grátis se existir QUALQUER Pizza Grande no carrinho (Tradicional, Especial ou Doce).
+    // - O Combo Pizza + Refri também entra como entrega grátis (pois inclui pizza grande).
     const COMBO_FREE_DELIVERY_ID = 'combo-pizza-refri'; // id-base do combo
+
     function hasFreeDeliveryComboInCart() {
         if (!cart || cart.length === 0) return false;
-        return cart.some(item => {
-            return (item.isCombo === true) && (item.id && item.id.startsWith(COMBO_FREE_DELIVERY_ID));
+        return cart.some(item => (item.isCombo === true) && (item.id && item.id.startsWith(COMBO_FREE_DELIVERY_ID)));
+    }
+
+    function hasLargePizzaInCart() {
+        if (!cart || cart.length === 0) return false;
+
+        // Pizzas avulsas (tradicionais/especiais/doces) com tamanho "Grande"
+        const hasAvulsaGrande = cart.some(item => {
+            const isPizzaCategory = ['tradicionais', 'especiais', 'doces'].includes(item.category);
+            const sizeLabel = (item.selectedSize && item.selectedSize.size) ? String(item.selectedSize.size).toLowerCase() : '';
+            const idHasGrande = (item.id && String(item.id).includes('-grande')); // fallback seguro
+            return isPizzaCategory && (sizeLabel.includes('grande') || idHasGrande);
         });
+
+        if (hasAvulsaGrande) return true;
+
+        // Combos (garante que combo conte como pizza grande)
+        return cart.some(item => item.isCombo === true);
+    }
+
+    function hasFreeDeliveryInCart() {
+        return hasFreeDeliveryComboInCart() || hasLargePizzaInCart();
     }
 
 
@@ -457,9 +478,9 @@ function renderMenuItems(category = 'tradicionais') {
 
         // Adicionar mensagem informativa sobre taxa de entrega
         const deliveryInfoDiv = document.getElementById('delivery-info-message');
-        const hasComboFreeDelivery = hasFreeDeliveryComboInCart();
+        const hasFreeDelivery = hasFreeDeliveryInCart();
 if (deliveryInfoDiv && itemCount > 0) {
-            if (hasComboFreeDelivery) {
+            if (hasFreeDelivery) {
                 // Não avisar taxa quando for apenas o combo (entrega grátis)
                 deliveryInfoDiv.classList.add('hidden');
                 deliveryInfoDiv.innerHTML = '';
@@ -964,14 +985,14 @@ const itemToAdd = {
 
     function updateCartWithDelivery() {
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const hasComboFreeDelivery = hasFreeDeliveryComboInCart();
-const deliveryFee = deliveryOptionDelivery.checked ? (hasComboFreeDelivery ? 0 : ENTREGA_PADRAO) : 0;
+        const hasFreeDelivery = hasFreeDeliveryInCart();
+const deliveryFee = deliveryOptionDelivery.checked ? (hasFreeDelivery ? 0 : ENTREGA_PADRAO) : 0;
         const total = subtotal + deliveryFee;
 
         // Atualizar texto da opção de entrega (grátis somente para o combo)
         const deliveryLabel = document.querySelector('label[for="delivery-option-delivery"]');
         if (deliveryLabel) {
-            deliveryLabel.textContent = hasComboFreeDelivery
+            deliveryLabel.textContent = hasFreeDelivery
                 ? 'Entrega em Domicílio (Grátis)'
                 : `Entrega em Domicílio (R$ ${formatCurrency(ENTREGA_PADRAO)})`;
         }
@@ -1090,8 +1111,8 @@ const deliveryFee = deliveryOptionDelivery.checked ? (hasComboFreeDelivery ? 0 :
         
         // --- Resumo Financeiro para WhatsApp (usa os valores do RESUMO DO PEDIDO) ---
         const subtotalCalc = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const hasComboFreeDelivery = hasFreeDeliveryComboInCart();
-const deliveryFeeCalc = (deliveryOption === 'delivery') ? (hasComboFreeDelivery ? 0 : ENTREGA_PADRAO) : 0;
+        const hasFreeDelivery = hasFreeDeliveryInCart();
+const deliveryFeeCalc = (deliveryOption === 'delivery') ? (hasFreeDelivery ? 0 : ENTREGA_PADRAO) : 0;
         const totalCalc = subtotalCalc + deliveryFeeCalc;
 
         const checkoutSubtotalEl = document.getElementById('checkout-subtotal');

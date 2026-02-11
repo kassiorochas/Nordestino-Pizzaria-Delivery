@@ -1,6 +1,6 @@
-const CACHE_NAME = 'nordestino-pizzaria-cache-v2';
-const STATIC_CACHE = 'nordestino-static-v2';
-const DYNAMIC_CACHE = 'nordestino-dynamic-v2';
+const CACHE_NAME = 'nordestino-pizzaria-cache-v3';
+const STATIC_CACHE = 'nordestino-static-v3';
+const DYNAMIC_CACHE = 'nordestino-dynamic-v3';
 
 const staticAssets = [
     './',
